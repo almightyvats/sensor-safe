@@ -1,5 +1,6 @@
 package com.almightyvats.sensorsafe.model;
 
+import com.almightyvats.sensorsafe.model.util.SanityCheckType;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.TimeSeries;
@@ -15,6 +16,6 @@ public class Reading {
     private String uniqueHardwareName;
     private String value;
     private Date timestamp;
-    // TODO: Change the type of sanity check to SanityErrorType
-    private String sanityFlag;
+    // Not sure if we need the @DBRef annotation here
+    private SanityCheckType sanityFlag;
 }

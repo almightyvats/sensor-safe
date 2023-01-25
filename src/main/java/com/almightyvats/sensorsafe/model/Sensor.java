@@ -1,5 +1,7 @@
 package com.almightyvats.sensorsafe.model;
 
+import com.almightyvats.sensorsafe.model.util.SensorProperty;
+import com.almightyvats.sensorsafe.model.util.SensorType;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -12,8 +14,6 @@ public class Sensor {
     @Id
     private String id;
     private String name;
-    // TODO: Change the type to enum sensorType
-    private String type;
-    // TODO: Change the type to enum sensorProperty
-    private List<String> parameters;
+    private SensorType type;
+    private List<SensorProperty> parameters;
 }
