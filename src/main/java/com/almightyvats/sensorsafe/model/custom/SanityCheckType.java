@@ -1,4 +1,4 @@
-package com.almightyvats.sensorsafe.model.util;
+package com.almightyvats.sensorsafe.model.custom;
 
 public enum SanityCheckType {
     NO_ERROR("NO_ERROR"),

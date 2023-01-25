@@ -1,6 +1,6 @@
 package com.almightyvats.sensorsafe.model;
 
-import com.almightyvats.sensorsafe.model.util.SanityCheckType;
+import com.almightyvats.sensorsafe.model.custom.SanityCheckType;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.TimeSeries;

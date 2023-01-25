@@ -1,7 +1,7 @@
 package com.almightyvats.sensorsafe.model;
 
-import com.almightyvats.sensorsafe.model.util.SensorProperty;
-import com.almightyvats.sensorsafe.model.util.SensorType;
+import com.almightyvats.sensorsafe.model.custom.SensorProperty;
+import com.almightyvats.sensorsafe.model.custom.SensorType;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
