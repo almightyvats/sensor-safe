@@ -75,13 +75,14 @@ public class SensorService {
             log.error("Station with id {} does not exist", stationId);
             return null;
         }
-        // TODO: Add sensor to station
         sensor.setUniqueHardwareName(HardwareNameUtil.getUniqueHardwareName(sensor.getName(), station.getMacAddress()));
         if (sensorRepository.existsByName(sensor.getName())) {
             log.error("Sensor with name {} already exists", sensor.getName());
             return null;
         }
-        return sensorRepository.save(sensor);
+        Sensor savedSensor = sensorRepository.save(sensor);
+        stationService.addSensor(station.getId(), savedSensor.getId());
+        return savedSensor;
     }
 
     /**
@@ -90,15 +91,21 @@ public class SensorService {
      * @param sensorToUpdate the entity to update.
      * @return the persisted entity.
      */
-    public Sensor update(Sensor sensorToUpdate) {
+    public Sensor update(Sensor sensorToUpdate, String stationId) {
         log.debug("Request to update Sensor : {}", sensorToUpdate);
         Sensor sensor = sensorRepository.findById(sensorToUpdate.getId()).orElse(null);
         if (sensor == null) {
             log.error("Sensor with id {} does not exist", sensorToUpdate.getId());
             return null;
         }
+        Station station = stationService.findById(stationId);
+        if (station == null) {
+            log.error("Station with id {} does not exist", stationId);
+            return null;
+        }
         sensor.setName(sensorToUpdate.getName());
-        sensor.setUniqueHardwareName(sensorToUpdate.getUniqueHardwareName());
+        sensor.setUniqueHardwareName(HardwareNameUtil.getUniqueHardwareName(sensorToUpdate.getName(),
+                station.getMacAddress()));
         sensor.setType(sensorToUpdate.getType());
         sensor.setParameters(sensorToUpdate.getParameters());
         return sensorRepository.save(sensor);

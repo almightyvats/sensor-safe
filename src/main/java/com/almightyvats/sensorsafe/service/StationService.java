@@ -80,5 +80,15 @@ public class StationService {
         station.setLocation(stationToUpdate.getLocation());
         return stationRepository.save(station);
     }
-    //TODO: Write a method to add a sensor to a station
+
+    public void addSensor(String stationId, String sensorId) {
+        log.debug("Request to add sensor {} to station {}", sensorId, stationId);
+        Station station = stationRepository.findById(stationId).orElse(null);
+        if(station == null) {
+            log.error("Station with id {} does not exist", stationId);
+            return;
+        }
+        station.getSensors().add(sensorId);
+        stationRepository.save(station);
+    }
 }
