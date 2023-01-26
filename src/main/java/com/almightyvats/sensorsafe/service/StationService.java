@@ -60,4 +60,25 @@ public class StationService {
         log.debug("Request to save Station : {}", station);
         return stationRepository.save(station);
     }
+
+    /**
+     * Update a station.
+     *
+     * @param stationToUpdate the entity to update.
+     * @return the persisted entity.
+     */
+    public Station update(Station stationToUpdate) {
+        log.debug("Request to update Station : {}", stationToUpdate);
+        Station station = stationRepository.findById(stationToUpdate.getId()).orElse(null);
+        if(station == null) {
+            log.error("Station with id {} does not exist", stationToUpdate.getId());
+            return null;
+        }
+        station.setName(stationToUpdate.getName());
+        station.setSensors(stationToUpdate.getSensors());
+        station.setMacAddress(stationToUpdate.getMacAddress());
+        station.setLocation(stationToUpdate.getLocation());
+        return stationRepository.save(station);
+    }
+    //TODO: Write a method to add a sensor to a station
 }

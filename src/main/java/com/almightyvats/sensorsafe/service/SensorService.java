@@ -72,14 +72,35 @@ public class SensorService {
         log.debug("Request to save Sensor : {}", sensor);
         Station station = stationService.findById(stationId);
         if (station == null) {
-            log.error("Station not found");
+            log.error("Station with id {} does not exist", stationId);
             return null;
         }
+        // TODO: Add sensor to station
         sensor.setUniqueHardwareName(HardwareNameUtil.getUniqueHardwareName(sensor.getName(), station.getMacAddress()));
         if (sensorRepository.existsByName(sensor.getName())) {
             log.error("Sensor with name {} already exists", sensor.getName());
             return null;
         }
+        return sensorRepository.save(sensor);
+    }
+
+    /**
+     * Update a sensor.
+     *
+     * @param sensorToUpdate the entity to update.
+     * @return the persisted entity.
+     */
+    public Sensor update(Sensor sensorToUpdate) {
+        log.debug("Request to update Sensor : {}", sensorToUpdate);
+        Sensor sensor = sensorRepository.findById(sensorToUpdate.getId()).orElse(null);
+        if (sensor == null) {
+            log.error("Sensor with id {} does not exist", sensorToUpdate.getId());
+            return null;
+        }
+        sensor.setName(sensorToUpdate.getName());
+        sensor.setUniqueHardwareName(sensorToUpdate.getUniqueHardwareName());
+        sensor.setType(sensorToUpdate.getType());
+        sensor.setParameters(sensorToUpdate.getParameters());
         return sensorRepository.save(sensor);
     }
 }
