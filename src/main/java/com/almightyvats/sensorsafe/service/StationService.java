@@ -53,6 +53,10 @@ public class StationService {
      * @return the persisted entity.
      */
     public Station save(Station station) {
+        if(stationRepository.existsByName(station.getName())) {
+            log.error("Station with name {} already exists", station.getName());
+            return null;
+        }
         log.debug("Request to save Station : {}", station);
         return stationRepository.save(station);
     }

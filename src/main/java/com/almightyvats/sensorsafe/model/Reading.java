@@ -13,6 +13,7 @@ public class Reading {
     @Id
     private String id;
     private String sensorName;
+    private String stationMacAddress;
     private String uniqueHardwareName;
     private String value;
     private Date timestamp;

@@ -1,6 +1,8 @@
 package com.almightyvats.sensorsafe.service;
 
+import com.almightyvats.sensorsafe.core.util.HardwareNameUtil;
 import com.almightyvats.sensorsafe.model.Sensor;
+import com.almightyvats.sensorsafe.model.Station;
 import com.almightyvats.sensorsafe.repository.SensorRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,9 @@ public class SensorService {
 
     @Autowired
     private SensorRepository sensorRepository;
+
+    @Autowired
+    private StationService stationService;
 
     /**
      * Get all the sensors.
@@ -37,6 +42,17 @@ public class SensorService {
     }
 
     /**
+     * Get one sensor by name.
+     *
+     * @param name the name of the entity.
+     * @return the entity.
+     */
+    public Sensor findByName(String name) {
+        log.debug("Request to get Sensor : {}", name);
+        return sensorRepository.findByName(name).orElse(null);
+    }
+
+    /**
      * Delete the sensor by id.
      *
      * @param id the id of the entity.
@@ -52,10 +68,14 @@ public class SensorService {
      * @param sensor the entity to save.
      * @return the persisted entity.
      */
-    public Sensor save(Sensor sensor) {
-        // TODO: Create unique name using station mac and name
-        // will probably have to get the sensor id with the request
+    public Sensor save(Sensor sensor, String stationId) {
         log.debug("Request to save Sensor : {}", sensor);
+        Station station = stationService.findById(stationId);
+        if (station == null) {
+            log.error("Station not found");
+            return null;
+        }
+        sensor.setUniqueHardwareName(HardwareNameUtil.getUniqueHardwareName(sensor.getName(), station.getMacAddress()));
         if (sensorRepository.existsByName(sensor.getName())) {
             log.error("Sensor with name {} already exists", sensor.getName());
             return null;

@@ -14,6 +14,7 @@ public class Sensor {
     @Id
     private String id;
     private String name;
+    private String uniqueHardwareName;
     private SensorType type;
     private List<SensorProperty> parameters;
 }
