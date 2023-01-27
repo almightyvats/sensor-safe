@@ -57,18 +57,20 @@ public class SensorService {
      *
      * @param id the id of the entity.
      */
-    public void delete(String id) {
+    public String delete(String id) {
         log.debug("Request to delete Sensor : {}", id);
         sensorRepository.deleteById(id);
+        return id;
     }
 
     /**
      * Save a sensor.
      *
+     * @param stationId the id of the station to which the sensor belongs.
      * @param sensor the entity to save.
      * @return the persisted entity.
      */
-    public Sensor save(Sensor sensor, String stationId) {
+    public Sensor save(String stationId, Sensor sensor) {
         log.debug("Request to save Sensor : {}", sensor);
         Station station = stationService.findById(stationId);
         if (station == null) {
@@ -91,9 +93,9 @@ public class SensorService {
      * @param sensorToUpdate the entity to update.
      * @return the persisted entity.
      */
-    public Sensor update(Sensor sensorToUpdate, String stationId) {
+    public Sensor update(String stationId, String sensorToUpdateId, Sensor sensorToUpdate) {
         log.debug("Request to update Sensor : {}", sensorToUpdate);
-        Sensor sensor = sensorRepository.findById(sensorToUpdate.getId()).orElse(null);
+        Sensor sensor = sensorRepository.findById(sensorToUpdateId).orElse(null);
         if (sensor == null) {
             log.error("Sensor with id {} does not exist", sensorToUpdate.getId());
             return null;

@@ -41,9 +41,10 @@ public class StationService {
      *
      * @param id the id of the entity.
      */
-    public void delete(String id) {
+    public String delete(String id) {
         log.debug("Request to delete Station : {}", id);
         stationRepository.deleteById(id);
+        return id;
     }
 
     /**
@@ -67,9 +68,9 @@ public class StationService {
      * @param stationToUpdate the entity to update.
      * @return the persisted entity.
      */
-    public Station update(Station stationToUpdate) {
+    public Station update(String id, Station stationToUpdate) {
         log.debug("Request to update Station : {}", stationToUpdate);
-        Station station = stationRepository.findById(stationToUpdate.getId()).orElse(null);
+        Station station = stationRepository.findById(id).orElse(null);
         if(station == null) {
             log.error("Station with id {} does not exist", stationToUpdate.getId());
             return null;
