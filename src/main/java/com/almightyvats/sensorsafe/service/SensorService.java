@@ -112,4 +112,14 @@ public class SensorService {
         sensor.setParameters(sensorToUpdate.getParameters());
         return sensorRepository.save(sensor);
     }
+
+    /**
+     * FOR TESTING PURPOSES ONLY
+     *
+     * Delete all sensors.
+     */
+    public void deleteAll() {
+        log.debug("Request to delete all Sensors");
+        sensorRepository.deleteAll();
+    }
 }

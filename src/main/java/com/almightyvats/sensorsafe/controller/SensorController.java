@@ -25,12 +25,12 @@ public class SensorController {
     }
 
     @PostMapping("/add/{station_id}")
-    public Sensor saveSensor(@PathVariable String station_id, Sensor sensor) {
+    public Sensor saveSensor(@PathVariable String station_id, @RequestBody Sensor sensor) {
         return sensorService.save(station_id, sensor);
     }
 
     @PutMapping("/update/{station_id}/{sensor_id}")
-    public Sensor updateSensor(@PathVariable String station_id, @PathVariable String sensor_id, Sensor sensor) {
+    public Sensor updateSensor(@PathVariable String station_id, @PathVariable String sensor_id, @RequestBody Sensor sensor) {
         return sensorService.update(station_id, sensor_id, sensor);
     }
 
