@@ -1,9 +1,13 @@
 package com.almightyvats.sensorsafe.util;
 
+import com.almightyvats.sensorsafe.core.util.HardwareNameUtil;
+import com.almightyvats.sensorsafe.core.util.ReadingPayload;
 import com.almightyvats.sensorsafe.model.Sensor;
 import com.almightyvats.sensorsafe.model.Station;
 import com.almightyvats.sensorsafe.model.custom.SensorProperty;
 import com.almightyvats.sensorsafe.model.custom.SensorType;
+
+import java.util.Date;
 
 public class ModelUtil {
 
@@ -73,5 +77,15 @@ public class ModelUtil {
         station.setMacAddress(macAddress);
         station.setLocation(stationLocation);
         return station;
+    }
+
+    public static ReadingPayload createReading(String sensorName, String stationMacAddress, Date timestamp, double value) {
+        ReadingPayload reading = new ReadingPayload();
+        reading.setSensorName(sensorName);
+        reading.setStationMacAddress(stationMacAddress);
+        reading.setUniqueHardwareName(HardwareNameUtil.getUniqueHardwareName(sensorName, stationMacAddress));
+        reading.setTimestamp(timestamp.getTime()/1000);
+        reading.setValue(value);
+        return reading;
     }
 }

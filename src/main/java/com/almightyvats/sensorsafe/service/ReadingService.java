@@ -2,13 +2,14 @@ package com.almightyvats.sensorsafe.service;
 
 import com.almightyvats.sensorsafe.core.TsDbManager;
 import com.almightyvats.sensorsafe.core.util.HardwareNameUtil;
-import com.almightyvats.sensorsafe.model.Reading;
+import com.almightyvats.sensorsafe.core.util.ReadingPayload;
 import com.almightyvats.sensorsafe.model.Sensor;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -27,21 +28,25 @@ public class ReadingService {
      * @param reading the entity to save.
      * @return the persisted entity.
      */
-    public void save(Reading reading) {
-        log.debug("Request to save Reading : {}", reading);
-        //TODO: Sanity check shall be applied here
-        Document document = getDocument(reading);
-        tsDbManager.insert(document);
+    public void save(ReadingPayload reading) {
+        try {
+            log.debug("Request to save Reading : {}", reading);
+            //TODO: Sanity check shall be applied here
+            Document document = getDocument(reading);
+            tsDbManager.insert(document);
+        } catch (Exception e) {
+            log.error("Error while saving reading", e);
+        }
     }
 
-    private Document getDocument(Reading reading) {
+    private Document getDocument(ReadingPayload reading) {
         Document document = new Document();
         document.append("sensorName", reading.getSensorName());
         document.append("stationMac", reading.getStationMacAddress());
         document.append("uniqueHardwareName", HardwareNameUtil.getUniqueHardwareName(reading.getSensorName(),
                 reading.getStationMacAddress()));
         document.append("value", reading.getValue());
-        document.append("timestamp", reading.getTimestamp().getTime() * 1000);
+        document.append("timestamp", new Date(reading.getTimestamp() * 1000));
         return document;
     }
 
@@ -61,6 +66,16 @@ public class ReadingService {
     }
 
     /**
+     * FOR TESTING PURPOSES ONLY
+     * Get the count of all the readings.
+     * @return the count of all the readings.
+     */
+    public long getCount() {
+        return tsDbManager.getNumberOfDocuments();
+    }
+
+    /**
+     * FOR TESTING PURPOSES ONLY
      * Delete all the readings.
      */
     public void deleteAll() {

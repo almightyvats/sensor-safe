@@ -32,7 +32,7 @@ public class CSVReader {
         return csvData;
     }
 
-    public Map<Date, Double> getValueWithTimestamp(String filePath, CSVMiemingSensorType sensorType,
+    public static Map<Date, Double> getValueWithTimestamp(String filePath, CSVMiemingSensorType sensorType,
                                                    int number_of_readings, int start_from) throws ParseException {
         // read csv file
         List<List<String>> miemingCSV = CSVReader.readCSV(filePath);
