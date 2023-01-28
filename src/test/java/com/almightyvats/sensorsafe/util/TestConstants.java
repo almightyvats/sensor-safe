@@ -31,4 +31,7 @@ public class TestConstants {
     public static final String STATION_LOCATION_2 = "Location 2";
     public static final String STATION_LOCATION_3 = "Location 3";
     public static final String STATION_LOCATION_4 = "Location 4";
+    // data file paths
+    public static final String DATA_FILE_PATH_MIEMING_SUBSET = "src/test/resources/data/data_subset.csv";
+    public static final String DATA_FILE_PATH_MIEMING = "src/test/resources/data/mieming.csv";
 }
