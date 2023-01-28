@@ -62,7 +62,7 @@ public class ModelUtil {
                 sensorProperty.setMinValue(0);
             }
         }
-        sensor.getParameters().add(sensorProperty);
+        sensor.setParameters(sensorProperty);
         return sensor;
     }
 
