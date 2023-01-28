@@ -92,4 +92,14 @@ public class StationService {
         station.getSensors().add(sensorId);
         stationRepository.save(station);
     }
+
+    /**
+     * FOR TESTING PURPOSES ONLY
+     *
+     * Delete all stations.
+     */
+    public void deleteAll() {
+        log.debug("Request to delete all Stations");
+        stationRepository.deleteAll();
+    }
 }
