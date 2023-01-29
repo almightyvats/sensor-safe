@@ -6,6 +6,8 @@ import { NavigationEnd, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import {AppService} from "./app.service";
 import {SharedService} from "./shared.service";
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {StationFormComponent} from "./station.form/station.form.component";
 
 @UntilDestroy()
 @Component({
@@ -19,8 +21,10 @@ export class AppComponent {
   stations: any = [];
   private sensor: any = [];
 
+  modalContent: any;
+
   constructor(private observer: BreakpointObserver, private router: Router, private appService: AppService,
-              private sharedService: SharedService) {
+              private sharedService: SharedService, private dialog: MatDialog) {
     this.setup();
   }
 
@@ -74,5 +78,12 @@ export class AppComponent {
 
   getCurrentSensors() {
     return this.sensor;
+  }
+
+  openModal() {
+    this.dialog.open(StationFormComponent,{
+      width: '100%',
+      maxWidth: '600px',
+    });
   }
 }

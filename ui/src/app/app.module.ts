@@ -12,12 +12,16 @@ import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatIconModule} from "@angular/material/icon";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {CardComponent} from './card/card.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { StationFormComponent } from './station.form/station.form.component';
+
 
 
 @NgModule({
   declarations: [
     AppComponent,
     CardComponent,
+    StationFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -29,6 +33,7 @@ import {CardComponent} from './card/card.component';
     MatToolbarModule,
     MatIconModule,
     MatSidenavModule,
+    MatDialogModule
   ],
   exports: [CardComponent],
   providers: [],

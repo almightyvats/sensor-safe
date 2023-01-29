@@ -13,11 +13,10 @@
 
 <mat-sidenav-container>
   <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
-    <button mat-button class="menu-button">
+    <button mat-button class="menu-button" (click)="openModal()">
       <mat-icon>add</mat-icon>
       <span>Add station</span>
     </button>
-
     <mat-divider></mat-divider>
 
     <button mat-button class="menu-button" *ngFor="let station of stations">
