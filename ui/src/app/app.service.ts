@@ -5,13 +5,13 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class CardService {
-  private sensorBaseUrl = 'http://localhost:8080/v1/sensor/';
+export class AppService {
+  private stationBaseUrl = 'http://localhost:8080/v1/station/';
 
   constructor(private http: HttpClient) { }
 
-  getAllSensors(): Observable<any> {
-    const url = this.sensorBaseUrl + 'all';
+  getAllStations(): Observable<any> {
+    const url = this.stationBaseUrl + 'all';
     return this.http.get(url);
   }
 }

@@ -4,6 +4,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { delay, filter } from 'rxjs/operators';
 import { NavigationEnd, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import {AppService} from "./app.service";
 
 @UntilDestroy()
 @Component({
@@ -14,8 +15,11 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 export class AppComponent {
   @ViewChild(MatSidenav)
   sidenav!: MatSidenav;
+  stations: any;
 
-  constructor(private observer: BreakpointObserver, private router: Router) {}
+  constructor(private observer: BreakpointObserver, private router: Router, private appService: AppService) {
+    this.setup();
+  }
 
   ngAfterViewInit() {
     this.observer
@@ -42,4 +46,15 @@ export class AppComponent {
         }
       });
   }
+
+  private setup() {
+    this.getAllStations();
+  }
+
+  getAllStations() {
+    this.appService.getAllStations().subscribe(data => {
+      this.stations = data;
+    });
+  }
+
 }

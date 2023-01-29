@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {CardService} from "./card.service";
 
 @Component({
@@ -6,19 +6,20 @@ import {CardService} from "./card.service";
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.css']
 })
-export class CardComponent implements OnInit {
-  users: any;
+export class CardComponent {
+  sensors: any;
 
   constructor(private userService: CardService) {
+    this.setup();
   }
 
-  ngOnInit() {
-    this.getUsers();
+  private setup() {
+    this.getSensors();
   }
 
-  getUsers() {
-    this.userService.getUsers().subscribe(data => {
-      this.users = data;
+  getSensors() {
+    this.userService.getAllSensors().subscribe(data => {
+      this.sensors = data;
     });
   }
 }

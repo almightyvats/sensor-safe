@@ -11,6 +11,11 @@ public class TestConstants {
     public static final String SENSOR_ID_2 = "5f2b2b2b2b2b2b2b2b2b2b2c";
     public static final String SENSOR_ID_3 = "5f3b3b3b3b3b3b3b3b3b3b3c";
     public static final String SENSOR_ID_4 = "5f4b4b4b4b4b4b4b4b4b4b4c";
+    public static final String SENSOR_ID_5 = "5f5b5b5b5b5b5b5b5b5b5b5c";
+    public static final String SENSOR_ID_6 = "5f6b6b6b6b6b6b6b6b6b6b6c";
+    public static final String SENSOR_ID_7 = "5f7b7b7b7b7b7b7b7b7b7b7c";
+    public static final String SENSOR_ID_8 = "5f8b8b8b8b8b8b8b8b8b8b8c";
+
     // some station names
     public static final String STATION_NAME_1 = "Station 1";
     public static final String STATION_NAME_2 = "Station 2";
@@ -21,6 +26,11 @@ public class TestConstants {
     public static final String SENSOR_NAME_2 = "Sensor 2";
     public static final String SENSOR_NAME_3 = "Sensor 3";
     public static final String SENSOR_NAME_4 = "Sensor 4";
+    public static final String SENSOR_NAME_5 = "Sensor 5";
+    public static final String SENSOR_NAME_6 = "Sensor 6";
+    public static final String SENSOR_NAME_7 = "Sensor 7";
+    public static final String SENSOR_NAME_8 = "Sensor 8";
+
     // some station mac addresses
     public static final String STATION_MAC_ADDRESS_1 = "00:00:00:00:00:01";
     public static final String STATION_MAC_ADDRESS_2 = "00:00:00:00:00:02";
