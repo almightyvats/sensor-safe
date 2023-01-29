@@ -12,6 +12,6 @@ export class AppService {
 
   getAllStations(): Observable<any> {
     const url = this.stationBaseUrl + 'all';
-    return this.http.get(url);
+    return this.http.get<any[]>(url);
   }
 }

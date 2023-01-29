@@ -5,6 +5,7 @@ import { delay, filter } from 'rxjs/operators';
 import { NavigationEnd, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import {AppService} from "./app.service";
+import {SharedService} from "./shared.service";
 
 @UntilDestroy()
 @Component({
@@ -14,10 +15,12 @@ import {AppService} from "./app.service";
 })
 export class AppComponent {
   @ViewChild(MatSidenav)
-  sidenav!: MatSidenav;
-  stations: any;
+  private sidenav!: MatSidenav;
+  stations: any = [];
+  private sensor: any = [];
 
-  constructor(private observer: BreakpointObserver, private router: Router, private appService: AppService) {
+  constructor(private observer: BreakpointObserver, private router: Router, private appService: AppService,
+              private sharedService: SharedService) {
     this.setup();
   }
 
@@ -54,7 +57,22 @@ export class AppComponent {
   getAllStations() {
     this.appService.getAllStations().subscribe(data => {
       this.stations = data;
+      this.setUpFirstStation(this.stations[0].id);
     });
   }
 
+  setUpFirstStation(stationId: any) {
+    this.sensor = this.stations.find((station: any) => station.id === stationId).sensors;
+    this.sharedService.setSensor(this.sensor);
+  }
+
+  onClick(stationId: any) {
+    // get sensor ids from station id
+    this.sensor = this.stations.find((station: any) => station.id === stationId).sensors;
+    this.sharedService.setSensor(this.sensor);
+  }
+
+  getCurrentSensors() {
+    return this.sensor;
+  }
 }

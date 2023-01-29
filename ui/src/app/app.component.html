@@ -22,9 +22,9 @@
 
     <button mat-button class="menu-button" *ngFor="let station of stations">
       <mat-icon>home</mat-icon>
-      <span>{{ station.name }}</span>
+      <span (click)="onClick(station.id)" >{{ station.name }}</span>
     </button>
-    
+
   </mat-sidenav>
   <mat-sidenav-content>
     <div class="content mat-elevation-z8">

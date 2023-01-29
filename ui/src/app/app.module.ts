@@ -30,6 +30,7 @@ import {CardComponent} from './card/card.component';
     MatIconModule,
     MatSidenavModule,
   ],
+  exports: [CardComponent],
   providers: [],
   bootstrap: [AppComponent]
 })

@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {CardService} from "./card.service";
+import {SharedService} from "../shared.service";
 
 @Component({
   selector: 'app-card',
@@ -8,18 +9,23 @@ import {CardService} from "./card.service";
 })
 export class CardComponent {
   sensors: any;
+  currentSensor: any;
 
-  constructor(private userService: CardService) {
-    this.setup();
-  }
-
-  private setup() {
+  constructor(private userService: CardService, private sharedService: SharedService) {
     this.getSensors();
   }
 
   getSensors() {
     this.userService.getAllSensors().subscribe(data => {
       this.sensors = data;
+      this.sharedService.currentData.subscribe(data => {
+        this.setCurrentSensor(data);
+      });
     });
+  }
+
+  setCurrentSensor(sensorIds: any[]) {
+    // populate this.currentSensor with the sensors that match the sensorIds
+    this.currentSensor = this.sensors.filter((sensor: any) => sensorIds.includes(sensor.id));
   }
 }
