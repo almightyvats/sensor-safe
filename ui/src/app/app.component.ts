@@ -1,9 +1,9 @@
-import { Component, ViewChild } from '@angular/core';
-import { BreakpointObserver } from '@angular/cdk/layout';
-import { MatSidenav } from '@angular/material/sidenav';
-import { delay, filter } from 'rxjs/operators';
-import { NavigationEnd, Router } from '@angular/router';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {BreakpointObserver} from '@angular/cdk/layout';
+import {MatSidenav} from '@angular/material/sidenav';
+import {delay, filter} from 'rxjs/operators';
+import {NavigationEnd, Router} from '@angular/router';
+import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
 import {AppService} from "./app.service";
 import {SharedService} from "./shared.service";
 import {MatDialog} from "@angular/material/dialog";
@@ -15,7 +15,8 @@ import {StationFormComponent} from "./station.form/station.form.component";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  TAG = "AppComponent";
   @ViewChild(MatSidenav)
   private sidenav!: MatSidenav;
   stations: any = [];
@@ -24,6 +25,10 @@ export class AppComponent {
   constructor(private observer: BreakpointObserver, private router: Router, private appService: AppService,
               private sharedService: SharedService, private dialog: MatDialog) {
     this.setup();
+  }
+
+  ngOnInit(): void {
+    this.populateUI();
   }
 
   ngAfterViewInit() {
@@ -54,28 +59,37 @@ export class AppComponent {
 
   private setup() {
     this.getAllStations();
+      this.sharedService.stationsData.subscribe(data => {
+        if (data !== null && data.length > 0) {
+          this.setStationInSharedService(data.at(0));
+        }
+      });
   }
 
   getAllStations() {
     this.appService.getAllStations().subscribe(data => {
-      this.stations = data;
-      this.setUpFirstStation(this.stations[0].id);
+      this.sharedService.setStations(data);
     });
   }
 
-  setUpFirstStation(stationId: any) {
-    this.sensor = this.stations.find((station: any) => station.id === stationId).sensors;
-    this.sharedService.setSensor(this.sensor);
+  populateUI() {
+    this.sharedService.stationsData.subscribe(data => {
+      this.stations = data;
+    });
+  }
+
+  setStationInSharedService(station: any) {
+    this.sharedService.setCurrentStation(station);
   }
 
   onClick(stationId: any) {
-    // get sensor ids from station id
-    this.sensor = this.stations.find((station: any) => station.id === stationId).sensors;
-    this.sharedService.setSensor(this.sensor);
+    // get station with stationId
+    const station = this.stations.find((station: any) => station.id === stationId);
+    this.setStationInSharedService(station);
   }
 
   openModal() {
-    this.dialog.open(StationFormComponent,{
+    this.dialog.open(StationFormComponent, {
       width: '100%',
       maxWidth: '600px',
     });

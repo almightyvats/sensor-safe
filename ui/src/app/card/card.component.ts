@@ -8,6 +8,7 @@ import {SharedService} from "../shared.service";
   styleUrls: ['./card.component.css']
 })
 export class CardComponent {
+  TAG = "CardComponent";
   sensors: any;
   currentSensor: any;
 
@@ -18,8 +19,8 @@ export class CardComponent {
   getSensors() {
     this.userService.getAllSensors().subscribe(data => {
       this.sensors = data;
-      this.sharedService.currentData.subscribe(data => {
-        this.setCurrentSensor(data);
+      this.sharedService.currentStationData.subscribe(data => {
+        this.setCurrentSensor(data.sensors);
       });
     });
   }

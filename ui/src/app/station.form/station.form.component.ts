@@ -2,6 +2,7 @@ import {Component, ViewEncapsulation} from '@angular/core';
 import {MatDialogRef} from "@angular/material/dialog";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AppService} from "../app.service";
+import {SharedService} from "../shared.service";
 
 @Component({
   selector: 'app-station.form',
@@ -19,7 +20,8 @@ export class StationFormComponent {
     location: new FormControl(''),
   });
 
-  constructor(public dialogRef: MatDialogRef<StationFormComponent>, private apiService: AppService) {
+  constructor(public dialogRef: MatDialogRef<StationFormComponent>, private apiService: AppService,
+              private sharedService: SharedService) {
   }
 
   onNoClick(): void {
@@ -30,7 +32,9 @@ export class StationFormComponent {
     if (this.form.valid) {
       const formData = {...this.form.value};
       this.apiService.saveStation(formData).subscribe(res => {
-        console.log(this.LABEL, "submit", "res", res);
+        this.apiService.getAllStations().subscribe(data => {
+          this.sharedService.setStations(data);
+        });
       });
     }
   }

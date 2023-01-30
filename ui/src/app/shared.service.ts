@@ -4,10 +4,17 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class SharedService {
-  private currentSensorIds = new BehaviorSubject<any>(null);
-  currentData = this.currentSensorIds.asObservable();
+  private stations = new BehaviorSubject<any>(null);
+  stationsData = this.stations.asObservable();
 
-  setSensor(data: any) {
-    this.currentSensorIds.next(data);
+  private currentStation = new BehaviorSubject<any>(null);
+  currentStationData = this.currentStation.asObservable();
+
+  setCurrentStation(data: any) {
+    this.currentStation.next(data);
+  }
+
+  setStations(data: any) {
+    this.stations.next(data);
   }
 }
