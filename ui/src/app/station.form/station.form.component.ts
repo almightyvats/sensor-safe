@@ -5,6 +5,7 @@ import {AppService} from "../app.service";
 import {SharedService} from "../shared.service";
 
 export interface IStation {
+  id: string;
   name: string;
   macAddress: string;
   location: string;
@@ -22,6 +23,7 @@ export class StationFormComponent implements OnInit {
 
   form!: FormGroup;
   station!: IStation;
+  showUpdateButton:boolean = false;
 
   constructor(public dialogRef: MatDialogRef<StationFormComponent>, private apiService: AppService,
               private sharedService: SharedService, private fb: FormBuilder, @Inject(MAT_DIALOG_DATA) data: any) {
@@ -32,22 +34,37 @@ export class StationFormComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  ngOnInit(): void {
+    this.showUpdateButton = this.station.id !== undefined;
+
+    this.form = this.fb.group({
+      name: new FormControl(this.station.name, [Validators.required]),
+      macAddress: new FormControl(this.station.macAddress, [Validators.required]),
+      location: new FormControl(this.station.location),
+    });
+  }
+
   submit() {
     if (this.form?.valid) {
       const formData = {...this.form.value};
       this.apiService.saveStation(formData).subscribe(() => {
-        this.apiService.getAllStations().subscribe(data => {
-          this.sharedService.setStations(data);
-        });
+        this.syncStations();
       });
     }
   }
 
-  ngOnInit(): void {
-    this.form = this.fb.group({
-      name: new FormControl(this.station.name, [Validators.required]),
-      mac: new FormControl(this.station.macAddress, [Validators.required]),
-      location: new FormControl(this.station.location),
+  update() {
+    if (this.form?.valid) {
+      const formData = {...this.form.value};
+      this.apiService.updateStation(this.station.id, formData).subscribe(() => {
+        this.syncStations();
+      });
+    }
+  }
+
+  private syncStations() {
+    this.apiService.getAllStations().subscribe(data => {
+      this.sharedService.setStations(data);
     });
   }
 }

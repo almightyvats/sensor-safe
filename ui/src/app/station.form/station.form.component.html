@@ -6,7 +6,7 @@
     </mat-form-field>
     <br>
     <mat-form-field style="width: 100%">
-      <input matInput placeholder="MAC Address" formControlName="mac">
+      <input matInput placeholder="MAC Address" formControlName="macAddress">
     </mat-form-field>
     <br>
     <mat-form-field style="width: 100%">
@@ -16,5 +16,6 @@
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="submit()">Save</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="submit()" *ngIf="!showUpdateButton">Save</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="update()" *ngIf="showUpdateButton">Update</button>
 </div>
