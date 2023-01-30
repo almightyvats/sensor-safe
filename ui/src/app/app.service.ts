@@ -14,4 +14,24 @@ export class AppService {
     const url = this.stationBaseUrl + 'all';
     return this.http.get<any[]>(url);
   }
+
+  getStationById(id: string): Observable<any> {
+    const url = this.stationBaseUrl + id;
+    return this.http.get<any[]>(url);
+  }
+
+  saveStation(data: any): Observable<any> {
+    const url = this.stationBaseUrl + 'add';
+    return this.http.post<any[]>(url, data);
+  }
+
+  updateStation(id: string, data: any): Observable<any> {
+    const url = this.stationBaseUrl + 'update/' + id;
+    return this.http.put<any[]>(url, data);
+  }
+
+  deleteStation(id: string): Observable<any> {
+    const url = this.stationBaseUrl + 'delete/' + id;
+    return this.http.delete<any[]>(url);
+  }
 }

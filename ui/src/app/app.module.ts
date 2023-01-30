@@ -14,7 +14,8 @@ import {MatSidenavModule} from "@angular/material/sidenav";
 import {CardComponent} from './card/card.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { StationFormComponent } from './station.form/station.form.component';
-
+import {MatInputModule} from "@angular/material/input";
+import {ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -33,7 +34,9 @@ import { StationFormComponent } from './station.form/station.form.component';
     MatToolbarModule,
     MatIconModule,
     MatSidenavModule,
-    MatDialogModule
+    MatDialogModule,
+    MatInputModule,
+    ReactiveFormsModule,
   ],
   exports: [CardComponent],
   providers: [],

@@ -1,8 +1,20 @@
-<h1 mat-dialog-title>Hi RANDOM</h1>
+<h1 mat-dialog-title>Add Station</h1>
 <div mat-dialog-content>
-  <p>What's up?</p>
+  <form [formGroup]="form">
+    <mat-form-field style="width: 100%">
+      <input matInput placeholder="Name" formControlName="name">
+    </mat-form-field>
+    <br>
+    <mat-form-field style="width: 100%">
+      <input matInput placeholder="MAC Address" formControlName="mac">
+    </mat-form-field>
+    <br>
+    <mat-form-field style="width: 100%">
+      <input matInput placeholder="Address" formControlName="location">
+    </mat-form-field>
+  </form>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">No Thanks</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Ok</button>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="submit()">Save</button>
 </div>
