@@ -1,6 +1,8 @@
 import {Component} from '@angular/core';
 import {CardService} from "./card.service";
 import {SharedService} from "../shared.service";
+import {MatDialog} from "@angular/material/dialog";
+import {CardFormComponent} from "./card.form/card.form.component";
 
 @Component({
   selector: 'app-card',
@@ -11,8 +13,9 @@ export class CardComponent {
   TAG = "CardComponent";
   sensors: any;
   currentSensor: any;
+  currentStation!: any;
 
-  constructor(private userService: CardService, private sharedService: SharedService) {
+  constructor(private userService: CardService, private sharedService: SharedService, private dialog: MatDialog) {
     this.getSensors();
   }
 
@@ -20,8 +23,17 @@ export class CardComponent {
     this.userService.getAllSensors().subscribe(data => {
       this.sensors = data;
       this.sharedService.currentStationData.subscribe(data => {
-        this.setCurrentSensor(data.sensors);
+        this.currentStation = data;
+        this.setCurrentSensor(this.currentStation.sensors);
       });
+    });
+  }
+
+  openModal(sensorId: any) {
+    this.dialog.open(CardFormComponent, {
+      data: {},
+      width: '100%',
+      maxWidth: '600px',
     });
   }
 

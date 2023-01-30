@@ -1,0 +1,59 @@
+<h1 mat-dialog-title>Add Sensor</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field style="width: 100%">
+      <input matInput placeholder="Name" formControlName="name">
+    </mat-form-field>
+    <br>
+    <mat-form-field style="width: 100%">
+      <input matInput placeholder="Type" formControlName="type">
+    </mat-form-field>
+    <br>
+<!--    <mat-slide-toggle formControlName="isEnable">{{sensor.parameters.isEnable}}</mat-slide-toggle>-->
+<!--    <br>-->
+<!--    <mat-form-field style="width: 100%">-->
+<!--      <input matInput placeholder="maxValue" formControlName="maxValue">-->
+<!--    </mat-form-field>-->
+<!--    <br>-->
+<!--    <mat-form-field style="width: 100%">-->
+<!--      <input matInput placeholder="minValue" formControlName="minValue">-->
+<!--    </mat-form-field>-->
+<!--    <br>-->
+<!--    <mat-form-field style="width: 100%">-->
+<!--      <input matInput placeholder="unit" formControlName="unit">-->
+<!--    </mat-form-field>-->
+<!--    <br>-->
+<!--    <mat-form-field style="width: 100%">-->
+<!--      <input matInput placeholder="precision" formControlName="precision">-->
+<!--    </mat-form-field>-->
+<!--    <br>-->
+<!--    <mat-form-field style="width: 100%">-->
+<!--      <input matInput placeholder="sleepInterval" formControlName="sleepInterval">-->
+<!--    </mat-form-field>-->
+<!--    <br>-->
+<!--    <mat-form-field style="width: 100%">-->
+<!--      <input matInput placeholder="maxFrozenTimeInSeconds" formControlName="maxFrozenTimeInSeconds">-->
+<!--    </mat-form-field>-->
+<!--    <br>-->
+<!--    <mat-form-field style="width: 100%">-->
+<!--      <input matInput placeholder="maxRateOfChange" formControlName="maxRateOfChange">-->
+<!--    </mat-form-field>-->
+<!--    <br>-->
+<!--    <mat-form-field style="width: 100%">-->
+<!--      <input matInput placeholder="minVariationCoefficient" formControlName="minVariationCoefficient">-->
+<!--    </mat-form-field>-->
+<!--    <br>-->
+<!--    <mat-form-field style="width: 100%">-->
+<!--      <input matInput placeholder="latitude" formControlName="latitude">-->
+<!--    </mat-form-field>-->
+<!--    <br>-->
+<!--    <mat-form-field style="width: 100%">-->
+<!--      <input matInput placeholder="latitude" formControlName="latitude">-->
+<!--    </mat-form-field>-->
+<!--    <br>-->
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="submit()">Save</button>
+</div>

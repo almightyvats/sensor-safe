@@ -8,3 +8,9 @@
   width: 300px;
   margin: 20px;
 }
+
+.fab-button {
+  position: fixed;
+  bottom: 30px;
+  right: 50px;
+}

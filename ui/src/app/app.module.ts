@@ -16,6 +16,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { StationFormComponent } from './station.form/station.form.component';
 import {MatInputModule} from "@angular/material/input";
 import {ReactiveFormsModule} from "@angular/forms";
+import { CardFormComponent } from './card/card.form/card.form.component';
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 
 
 @NgModule({
@@ -23,6 +26,7 @@ import {ReactiveFormsModule} from "@angular/forms";
     AppComponent,
     CardComponent,
     StationFormComponent,
+    CardFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -37,6 +41,8 @@ import {ReactiveFormsModule} from "@angular/forms";
     MatDialogModule,
     MatInputModule,
     ReactiveFormsModule,
+    MatCheckboxModule,
+    MatSlideToggleModule,
   ],
   exports: [CardComponent],
   providers: [],
