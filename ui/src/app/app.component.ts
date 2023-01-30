@@ -88,8 +88,10 @@ export class AppComponent implements OnInit {
     this.setStationInSharedService(station);
   }
 
-  openModal() {
+  openModal(stationId: any) {
+    const data = stationId !== null ? this.stations.find((station: any) => station.id === stationId) : {};
     this.dialog.open(StationFormComponent, {
+      data: data,
       width: '100%',
       maxWidth: '600px',
     });

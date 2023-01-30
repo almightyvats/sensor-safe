@@ -1,8 +1,14 @@
-import {Component, ViewEncapsulation} from '@angular/core';
-import {MatDialogRef} from "@angular/material/dialog";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {Component, ViewEncapsulation, OnInit, Inject} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {AppService} from "../app.service";
 import {SharedService} from "../shared.service";
+
+export interface IStation {
+  name: string;
+  macAddress: string;
+  location: string;
+}
 
 @Component({
   selector: 'app-station.form',
@@ -10,18 +16,16 @@ import {SharedService} from "../shared.service";
   styleUrls: ['./station.form.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class StationFormComponent {
+export class StationFormComponent implements OnInit {
 
-  private LABEL = "STATION_FORM";
+  private TAG = "STATION_FORM";
 
-  form = new FormGroup({
-    name: new FormControl('', [Validators.required]),
-    mac: new FormControl('', [Validators.required]),
-    location: new FormControl(''),
-  });
+  form!: FormGroup;
+  station!: IStation;
 
   constructor(public dialogRef: MatDialogRef<StationFormComponent>, private apiService: AppService,
-              private sharedService: SharedService) {
+              private sharedService: SharedService, private fb: FormBuilder, @Inject(MAT_DIALOG_DATA) data: any) {
+    this.station = data;
   }
 
   onNoClick(): void {
@@ -29,13 +33,21 @@ export class StationFormComponent {
   }
 
   submit() {
-    if (this.form.valid) {
+    if (this.form?.valid) {
       const formData = {...this.form.value};
-      this.apiService.saveStation(formData).subscribe(res => {
+      this.apiService.saveStation(formData).subscribe(() => {
         this.apiService.getAllStations().subscribe(data => {
           this.sharedService.setStations(data);
         });
       });
     }
+  }
+
+  ngOnInit(): void {
+    this.form = this.fb.group({
+      name: new FormControl(this.station.name, [Validators.required]),
+      mac: new FormControl(this.station.macAddress, [Validators.required]),
+      location: new FormControl(this.station.location),
+    });
   }
 }

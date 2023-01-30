@@ -5,24 +5,42 @@
     *ngIf="sidenav.mode === 'over'"
     (click)="sidenav.toggle()"
   >
-    <mat-icon *ngIf="!sidenav.opened"> menu </mat-icon>
-    <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
+    <mat-icon *ngIf="!sidenav.opened"> menu</mat-icon>
+    <mat-icon *ngIf="sidenav.opened"> close</mat-icon>
   </button>
   Sensor Safe
 </mat-toolbar>
 
 <mat-sidenav-container>
   <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
-    <button mat-button class="menu-button" (click)="openModal()">
+    <button mat-button class="menu-button" (click)="openModal(null)">
       <mat-icon>add</mat-icon>
       <span>Add station</span>
     </button>
     <mat-divider></mat-divider>
 
-    <button mat-button class="menu-button" *ngFor="let station of stations">
-      <mat-icon>home</mat-icon>
-      <span (click)="onClick(station.id)" >{{ station.name }}</span>
-    </button>
+    <div *ngFor="let station of stations">
+      <table>
+        <tr>
+          <td>
+            <button mat-button class="menu-button">
+              <mat-icon>home</mat-icon>
+            <span (click)="onClick(station.id)" >{{ station.name }}</span>
+            </button>
+          </td>
+          <td>
+            <button mat-button class="menu-button" (click)="openModal(station.id)">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </td>
+          <td>
+            <button mat-button class="menu-button" (click)="openModal(null)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </table>
+    </div>
 
   </mat-sidenav>
   <mat-sidenav-content>
