@@ -2,6 +2,8 @@ package com.almightyvats.sensorsafe.service;
 
 import com.almightyvats.sensorsafe.model.Station;
 import com.almightyvats.sensorsafe.repository.StationRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,10 @@ public class StationService {
 
     @Autowired
     private StationRepository stationRepository;
+
+    @Autowired
+    private ObjectMapper mapper;
+
 
     /**
      * Get all the stations.
@@ -41,10 +47,10 @@ public class StationService {
      *
      * @param id the id of the entity.
      */
-    public String delete(String id) {
+    public String delete(String id) throws JsonProcessingException {
         log.debug("Request to delete Station : {}", id);
         stationRepository.deleteById(id);
-        return id;
+        return mapper.writeValueAsString(id);
     }
 
     /**

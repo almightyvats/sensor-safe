@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
   stations: any = [];
   private sensor: any = [];
 
-  constructor(private observer: BreakpointObserver, private router: Router, private appService: AppService,
+  constructor(private observer: BreakpointObserver, private router: Router, private apiService: AppService,
               private sharedService: SharedService, private dialog: MatDialog) {
     this.setup();
   }
@@ -59,15 +59,15 @@ export class AppComponent implements OnInit {
 
   private setup() {
     this.getAllStations();
-      this.sharedService.stationsData.subscribe(data => {
-        if (data !== null && data.length > 0) {
-          this.setStationInSharedService(data.at(0));
-        }
-      });
+    this.sharedService.stationsData.subscribe(data => {
+      if (data !== null && data.length > 0) {
+        this.setStationInSharedService(data.at(0));
+      }
+    });
   }
 
   getAllStations() {
-    this.appService.getAllStations().subscribe(data => {
+    this.apiService.getAllStations().subscribe(data => {
       this.sharedService.setStations(data);
     });
   }
@@ -94,6 +94,13 @@ export class AppComponent implements OnInit {
       data: data,
       width: '100%',
       maxWidth: '600px',
+    });
+  }
+
+  delete(stationId: any) {
+    this.apiService.deleteStation(stationId).subscribe(() => {
+      this.getAllStations();
+      this.populateUI();
     });
   }
 }
