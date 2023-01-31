@@ -19,6 +19,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import { CardFormComponent } from './card/card.form/card.form.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatSelectModule} from "@angular/material/select";
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
     ReactiveFormsModule,
     MatCheckboxModule,
     MatSlideToggleModule,
+    MatSelectModule,
   ],
   exports: [CardComponent],
   providers: [],

@@ -1,6 +1,6 @@
 <div class="dark-mode">
-  <h1 style="text-align: center; font-size: 48px;">{{ currentStation.name }}</h1>
-  <h2 style="text-align: center; font-size: 24px;">{{ currentStation.location }}</h2>
+  <h1 style="text-align: center; font-size: 48px;">{{ currentStation?.name }}</h1>
+  <h2 style="text-align: center; font-size: 24px;">{{ currentStation?.location }}</h2>
   <div class="container">
     <mat-card class="card" *ngFor="let sensor of currentSensor">
       <mat-card-header>

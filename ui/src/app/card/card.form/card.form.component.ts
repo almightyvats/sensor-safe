@@ -32,12 +32,37 @@ export interface ISensor {
   encapsulation: ViewEncapsulation.None
 })
 export class CardFormComponent implements OnInit {
-  sensor!: ISensor;
+  TAG = "CARD_FORM";
+  options = ['SOIL_TEMPERATURE', 'RELATIVE_HUMIDITY', 'AIR_TEMPERATURE', 'PRECIPITATION', 'SOLAR_RADIATION',
+    'SOIL_WATER_CONTENT', 'DENDROMETER'];
+
+  sensor: ISensor = {
+    id: '',
+    name: '',
+    uniqueHardwareName: '',
+    type: '',
+    parameters: {
+      isEnable: false,
+      maxValue: 0,
+      minValue: 0,
+      unit: '',
+      precision: 0,
+      sleepInterval: 0,
+      maxFrozenTimeInSeconds: 0,
+      maxRateOfChange: 0,
+      minVariationCoefficient: 0,
+      latitude: 0,
+      longitude: 0,
+    }
+  };
   form!: FormGroup;
+  toggleValue = new FormControl(false);
+  dropdownValue = new FormControl('AIR_TEMPERATURE');
+  textboxValue = new FormControl('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]);
 
   constructor(public dialogRef: MatDialogRef<CardFormComponent>, private apiService: AppService,
               private sharedService: SharedService, private fb: FormBuilder, @Inject(MAT_DIALOG_DATA) data: any) {
-    this.sensor = data;
+    // this.sensor = data; TODO: uncomment this line to pass data from parent component
   }
 
   onNoClick(): void {
@@ -45,26 +70,31 @@ export class CardFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.TAG, "ngOnInit", this.sensor);
 
-    this.form = this.fb.group({
+    this.form= new FormGroup({
       name: new FormControl(this.sensor.name, [Validators.required]),
       type: new FormControl(this.sensor.type, [Validators.required]),
-      // isEnable: new FormControl(this.sensor.parameters.isEnable, [Validators.requiredTrue]),
-      // maxValue: new FormControl(this.sensor.parameters.maxValue, [Validators.required]),
-      // minValue: new FormControl(this.sensor.parameters.minValue, [Validators.required]),
-      // unit: new FormControl(this.sensor.parameters.unit, [Validators.required]),
-      // precision: new FormControl(this.sensor.parameters.precision, [Validators.required]),
-      // sleepInterval: new FormControl(this.sensor.parameters.sleepInterval, [Validators.required]),
-      // maxFrozenTimeInSeconds: new FormControl(this.sensor.parameters.maxFrozenTimeInSeconds, [Validators.required]),
-      // maxRateOfChange: new FormControl(this.sensor.parameters.maxRateOfChange, [Validators.required]),
-      // minVariationCoefficient: new FormControl(this.sensor.parameters.minVariationCoefficient, [Validators.required]),
-      // latitude: new FormControl(this.sensor.parameters.latitude, [Validators.required]),
-      // longitude: new FormControl(this.sensor.parameters.longitude, [Validators.required]),
+      isEnable: new FormControl(this.sensor.parameters.isEnable, [Validators.required]),
+      maxValue: new FormControl(this.sensor.parameters.maxValue, [Validators.required]),
+      minValue: new FormControl(this.sensor.parameters.minValue, [Validators.required]),
+      unit: new FormControl(this.sensor.parameters.unit, [Validators.required]),
+      precision: new FormControl(this.sensor.parameters.precision, [Validators.required]),
+      sleepInterval: new FormControl(this.sensor.parameters.sleepInterval, [Validators.required]),
+      maxFrozenTimeInSeconds: new FormControl(this.sensor.parameters.maxFrozenTimeInSeconds, [Validators.required]),
+      maxRateOfChange: new FormControl(this.sensor.parameters.maxRateOfChange, [Validators.required]),
+      minVariationCoefficient: new FormControl(this.sensor.parameters.minVariationCoefficient, [Validators.required]),
+      latitude: new FormControl(this.sensor.parameters.latitude),
+      longitude: new FormControl(this.sensor.parameters.longitude)
     });
   }
 
 
   submit() {
-
+    if (this.form.valid) {
+      console.log(this.TAG, "submit", this.form.value);
+    } else {
+  console.log(this.TAG, "submit", "invalid form");
+    }
   }
 }
