@@ -1,9 +1,11 @@
 package com.almightyvats.sensorsafe.model.custom;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
 public class SensorProperty {
+    @JsonProperty("isEnable")
     private boolean isEnable;
     private double maxValue;
     private double minValue;

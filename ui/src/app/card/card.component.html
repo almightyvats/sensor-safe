@@ -2,7 +2,7 @@
   <h1 style="text-align: center; font-size: 48px;">{{ currentStation?.name }}</h1>
   <h2 style="text-align: center; font-size: 24px;">{{ currentStation?.location }}</h2>
   <div class="container">
-    <mat-card class="card" *ngFor="let sensor of currentSensor">
+    <mat-card class="card" *ngFor="let sensor of currentSensors">
       <mat-card-header>
         <mat-card-title>{{ sensor.name }}</mat-card-title>
       </mat-card-header>
@@ -11,7 +11,7 @@
         <p>Unit: {{ sensor.parameters.unit }}</p>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-button>Modify</button>
+        <button mat-button (click)="openModal(sensor.id)">Modify</button>
       </mat-card-actions>
     </mat-card>
   </div>

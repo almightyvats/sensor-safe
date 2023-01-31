@@ -3,6 +3,7 @@ import {CardService} from "./card.service";
 import {SharedService} from "../shared.service";
 import {MatDialog} from "@angular/material/dialog";
 import {CardFormComponent} from "./card.form/card.form.component";
+import {ISensor} from "./sensor.interface";
 
 @Component({
   selector: 'app-card',
@@ -11,8 +12,8 @@ import {CardFormComponent} from "./card.form/card.form.component";
 })
 export class CardComponent {
   TAG = "CardComponent";
-  sensors: any;
-  currentSensor: any;
+  sensors!: ISensor[];
+  currentSensors!: ISensor[];
   currentStation!: any;
 
   constructor(private userService: CardService, private sharedService: SharedService, private dialog: MatDialog) {
@@ -30,8 +31,36 @@ export class CardComponent {
   }
 
   openModal(sensorId: any) {
+    let selectedSensor: ISensor
+      = {
+      id: '',
+      name: '',
+      uniqueHardwareName: '',
+      type: '',
+      parameters: {
+        isEnable: false,
+        maxValue: 0,
+        minValue: 0,
+        unit: '',
+        precision: 0,
+        sleepInterval: 0,
+        maxFrozenTimeInSeconds: 0,
+        maxRateOfChange: 0,
+        minVariationCoefficient: 0,
+        latitude: 0,
+        longitude: 0,
+      }
+    };
+
+    const sensor = this.sensors.find((sensor: any) => sensor.id === sensorId);
+
+    const data = {
+      sensor: sensorId !== null ? sensor : selectedSensor,
+      stationId: this.currentStation.id,
+    };
+
     this.dialog.open(CardFormComponent, {
-      data: {},
+      data: data,
       width: '100%',
       maxWidth: '600px',
     });
@@ -39,6 +68,6 @@ export class CardComponent {
 
   setCurrentSensor(sensorIds: any[]) {
     // populate this.currentSensor with the sensors that match the sensorIds
-    this.currentSensor = this.sensors.filter((sensor: any) => sensorIds.includes(sensor.id));
+    this.currentSensors = this.sensors.filter((sensor: any) => sensorIds.includes(sensor.id));
   }
 }

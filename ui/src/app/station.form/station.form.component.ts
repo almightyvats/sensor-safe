@@ -23,7 +23,7 @@ export class StationFormComponent implements OnInit {
 
   form!: FormGroup;
   station!: IStation;
-  showUpdateButton:boolean = false;
+  showUpdateButton: boolean = false;
 
   constructor(public dialogRef: MatDialogRef<StationFormComponent>, private apiService: AppService,
               private sharedService: SharedService, private fb: FormBuilder, @Inject(MAT_DIALOG_DATA) data: any) {

@@ -1,29 +1,9 @@
 import {Component, ViewEncapsulation, OnInit, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {AppService} from "../../app.service";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {SharedService} from "../../shared.service";
-
-export interface ISensor {
-  id: string;
-  name: string;
-  uniqueHardwareName: string;
-  type: string;
-  parameters: {
-    isEnable: boolean;
-    maxValue: number;
-    minValue: number;
-    unit: string;
-    precision: number;
-    sleepInterval: number;
-    maxFrozenTimeInSeconds: number;
-    maxRateOfChange: number;
-    minVariationCoefficient: number;
-    // Only for solar radiation
-    latitude: number;
-    longitude: number;
-  }
-}
+import {CardService} from "../card.service";
+import {ISensor} from "../sensor.interface";
 
 @Component({
   selector: 'app-card.form',
@@ -35,34 +15,15 @@ export class CardFormComponent implements OnInit {
   TAG = "CARD_FORM";
   options = ['SOIL_TEMPERATURE', 'RELATIVE_HUMIDITY', 'AIR_TEMPERATURE', 'PRECIPITATION', 'SOLAR_RADIATION',
     'SOIL_WATER_CONTENT', 'DENDROMETER'];
-
-  sensor: ISensor = {
-    id: '',
-    name: '',
-    uniqueHardwareName: '',
-    type: '',
-    parameters: {
-      isEnable: false,
-      maxValue: 0,
-      minValue: 0,
-      unit: '',
-      precision: 0,
-      sleepInterval: 0,
-      maxFrozenTimeInSeconds: 0,
-      maxRateOfChange: 0,
-      minVariationCoefficient: 0,
-      latitude: 0,
-      longitude: 0,
-    }
-  };
+  currentStationId = '';
+  sensor!: ISensor;
   form!: FormGroup;
-  toggleValue = new FormControl(false);
-  dropdownValue = new FormControl('AIR_TEMPERATURE');
-  textboxValue = new FormControl('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]);
+  showUpdateButton: boolean = false;
 
-  constructor(public dialogRef: MatDialogRef<CardFormComponent>, private apiService: AppService,
-              private sharedService: SharedService, private fb: FormBuilder, @Inject(MAT_DIALOG_DATA) data: any) {
-    // this.sensor = data; TODO: uncomment this line to pass data from parent component
+  constructor(public dialogRef: MatDialogRef<CardFormComponent>, private sensorApi: CardService,
+              private sharedService: SharedService, @Inject(MAT_DIALOG_DATA) data: any) {
+    this.sensor = data.sensor;
+    this.currentStationId = data.stationId;
   }
 
   onNoClick(): void {
@@ -70,9 +31,9 @@ export class CardFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.TAG, "ngOnInit", this.sensor);
+    this.showUpdateButton = this.sensor.id !== '';
 
-    this.form= new FormGroup({
+    this.form = new FormGroup({
       name: new FormControl(this.sensor.name, [Validators.required]),
       type: new FormControl(this.sensor.type, [Validators.required]),
       isEnable: new FormControl(this.sensor.parameters.isEnable, [Validators.required]),
@@ -92,9 +53,46 @@ export class CardFormComponent implements OnInit {
 
   submit() {
     if (this.form.valid) {
-      console.log(this.TAG, "submit", this.form.value);
+      const sensor: ISensor = this.getSensor();
+      this.sensorApi.saveSensor(this.currentStationId, sensor).subscribe((data: any) => {
+        console.log(this.TAG, "submit", "data", data);
+      });
     } else {
-  console.log(this.TAG, "submit", "invalid form");
+      console.log(this.TAG, "submit", "invalid form");
     }
+  }
+
+  update() {
+    if (this.form.valid && this.sensor.id !== undefined) {
+      const sensor: ISensor = this.getSensor();
+      console.log(this.TAG, "update", "sensor", sensor);
+      console.log(this.TAG, "update", "sensor.id", this.sensor.id);
+      this.sensorApi.updateSensor(this.currentStationId, this.sensor.id, sensor).subscribe((data: any) => {
+        console.log(this.TAG, "update", "data", data);
+      });
+    } else {
+      console.log(this.TAG, "update", "invalid form");
+    }
+  }
+
+  private getSensor() {
+    return {
+      name: this.form.value.name,
+      uniqueHardwareName: '',
+      type: this.form.value.type,
+      parameters: {
+        isEnable: this.form.value.isEnable,
+        maxValue: this.form.value.maxValue,
+        minValue: this.form.value.minValue,
+        unit: this.form.value.unit,
+        precision: this.form.value.precision,
+        sleepInterval: this.form.value.sleepInterval,
+        maxFrozenTimeInSeconds: this.form.value.maxFrozenTimeInSeconds,
+        maxRateOfChange: this.form.value.maxRateOfChange,
+        minVariationCoefficient: this.form.value.minVariationCoefficient,
+        latitude: this.form.value.latitude,
+        longitude: this.form.value.longitude
+      }
+    };
   }
 }
