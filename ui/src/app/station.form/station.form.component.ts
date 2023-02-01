@@ -48,7 +48,7 @@ export class StationFormComponent implements OnInit {
     if (this.form?.valid) {
       const formData = {...this.form.value};
       this.apiService.saveStation(formData).subscribe(() => {
-        this.syncStations();
+        this.sharedService.syncStations();
       });
     }
   }
@@ -57,14 +57,8 @@ export class StationFormComponent implements OnInit {
     if (this.form?.valid) {
       const formData = {...this.form.value};
       this.apiService.updateStation(this.station.id, formData).subscribe(() => {
-        this.syncStations();
+        this.sharedService.syncStations();
       });
     }
-  }
-
-  private syncStations() {
-    this.apiService.getAllStations().subscribe(data => {
-      this.sharedService.setStations(data);
-    });
   }
 }

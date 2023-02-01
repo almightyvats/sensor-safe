@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CardService} from "./card.service";
 import {SharedService} from "../shared.service";
 import {MatDialog} from "@angular/material/dialog";
@@ -10,24 +10,39 @@ import {ISensor} from "./sensor.interface";
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.css']
 })
-export class CardComponent {
+export class CardComponent implements OnInit {
   TAG = "CardComponent";
   sensors!: ISensor[];
   currentSensors!: ISensor[];
   currentStation!: any;
 
   constructor(private userService: CardService, private sharedService: SharedService, private dialog: MatDialog) {
-    this.getSensors();
+    this.getAllSensors();
   }
 
-  getSensors() {
+  ngOnInit(): void {
+    this.populateUI();
+  }
+
+  getAllSensors() {
     this.userService.getAllSensors().subscribe(data => {
-      this.sensors = data;
-      this.sharedService.currentStationData.subscribe(data => {
-        this.currentStation = data;
-        this.setCurrentSensor(this.currentStation.sensors);
+      this.sharedService.setSensors(data);
+    });
+  }
+
+  populateUI() {
+    this.sharedService.sensorsData.subscribe(allSensors => {
+      this.sensors = allSensors;
+      this.sharedService.currentStationData.subscribe(currentStation => {
+        this.currentStation = currentStation;
+        this.setCurrentSensor(this.currentStation?.sensors);
       });
     });
+  }
+
+  setCurrentSensor(sensorIds: any[]) {
+    // populate this.currentSensor with the sensors that match the sensorIds
+    this.currentSensors = this.sensors?.filter((sensor: any) => sensorIds.includes(sensor.id));
   }
 
   openModal(sensorId: any) {
@@ -64,10 +79,5 @@ export class CardComponent {
       width: '100%',
       maxWidth: '600px',
     });
-  }
-
-  setCurrentSensor(sensorIds: any[]) {
-    // populate this.currentSensor with the sensors that match the sensorIds
-    this.currentSensors = this.sensors.filter((sensor: any) => sensorIds.includes(sensor.id));
   }
 }

@@ -55,7 +55,8 @@ export class CardFormComponent implements OnInit {
     if (this.form.valid) {
       const sensor: ISensor = this.getSensor();
       this.sensorApi.saveSensor(this.currentStationId, sensor).subscribe((data: any) => {
-        console.log(this.TAG, "submit", "data", data);
+        this.sharedService.syncStations(true);
+        this.sharedService.syncSensors();
       });
     } else {
       console.log(this.TAG, "submit", "invalid form");
@@ -65,10 +66,9 @@ export class CardFormComponent implements OnInit {
   update() {
     if (this.form.valid && this.sensor.id !== undefined) {
       const sensor: ISensor = this.getSensor();
-      console.log(this.TAG, "update", "sensor", sensor);
-      console.log(this.TAG, "update", "sensor.id", this.sensor.id);
       this.sensorApi.updateSensor(this.currentStationId, this.sensor.id, sensor).subscribe((data: any) => {
-        console.log(this.TAG, "update", "data", data);
+        this.sharedService.syncStations(true);
+        this.sharedService.syncSensors();
       });
     } else {
       console.log(this.TAG, "update", "invalid form");

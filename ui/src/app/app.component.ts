@@ -61,7 +61,11 @@ export class AppComponent implements OnInit {
     this.getAllStations();
     this.sharedService.stationsData.subscribe(data => {
       if (data !== null && data.length > 0) {
-        this.setStationInSharedService(data.at(0));
+        this.sharedService.currentStationData.subscribe(station => {
+          if (station === null) {
+            this.setStationInSharedService(data.at(0));
+          }
+        });
       }
     });
   }
