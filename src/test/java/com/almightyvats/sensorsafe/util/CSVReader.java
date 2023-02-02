@@ -43,7 +43,7 @@ public class CSVReader {
         // loop through csv file
         Map<Date, Double> valueWithTimestamp = new HashMap<>();
 
-        int noOfReadings = -1;
+        int noOfReadings = 0;
         for (int i = start_from; i < miemingCSV.size(); i++) {
             if (i == 0) {
                 continue;

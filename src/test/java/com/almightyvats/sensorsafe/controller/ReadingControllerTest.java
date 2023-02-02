@@ -9,6 +9,7 @@ import com.almightyvats.sensorsafe.util.CSVMiemingSensorType;
 import com.almightyvats.sensorsafe.util.CSVReader;
 import com.almightyvats.sensorsafe.util.ModelUtil;
 import com.almightyvats.sensorsafe.util.TestConstants;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
@@ -59,7 +60,7 @@ class ReadingControllerTest {
     }
 
     @AfterAll
-    void tearDown() {
+    void tearDown() throws JsonProcessingException {
         log.info("Deleting test data");
         if (sensorService.findAll().size() != 0) {
             sensorService.delete(TestConstants.SENSOR_ID_1);
