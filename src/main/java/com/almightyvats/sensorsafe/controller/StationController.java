@@ -2,12 +2,14 @@ package com.almightyvats.sensorsafe.controller;
 
 import com.almightyvats.sensorsafe.model.Station;
 import com.almightyvats.sensorsafe.service.StationService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/v1/station")
 public class StationController {
@@ -36,7 +38,7 @@ public class StationController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteStation(@PathVariable String id) {
+    public ResponseEntity<String> deleteStation(@PathVariable String id) throws JsonProcessingException {
         return ResponseEntity.ok(stationService.delete(id));
     }
 }

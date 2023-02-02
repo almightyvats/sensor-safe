@@ -97,7 +97,7 @@ public class SensorService {
         log.debug("Request to update Sensor : {}", sensorToUpdate);
         Sensor sensor = sensorRepository.findById(sensorToUpdateId).orElse(null);
         if (sensor == null) {
-            log.error("Sensor with id {} does not exist", sensorToUpdate.getId());
+            log.error("Sensor with id {} does not exist", sensorToUpdateId);
             return null;
         }
         Station station = stationService.findById(stationId);
