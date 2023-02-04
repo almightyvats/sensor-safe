@@ -95,6 +95,20 @@ public class TsDbManager {
     }
 
     /**
+     * Returns a list of documents from the database by a given sensor name and time range
+     *
+     * @param uniqueHardwareName the uniqueHardwareName of the sensor
+     * @param from the start time of the time range
+     * @param to the end time of the time range
+     */
+    public List<Document> getReadingsBySensorAndTimeRange(String uniqueHardwareName, long from, long to) {
+        return database.getCollection(collectionName)
+                .find(new Document("uniqueHardwareName", uniqueHardwareName)
+                        .append("timestamp", new Document("$gte", from).append("$lte", to)))
+                .into(new ArrayList<>());
+    }
+
+    /**
      * Drops the collection from the database
      */
     public void dropCollection() {
