@@ -20,6 +20,7 @@ import { CardFormComponent } from './card/card.form/card.form.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatSelectModule} from "@angular/material/select";
+import { StatsComponent } from './card/stats/stats.component';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import {MatSelectModule} from "@angular/material/select";
     CardComponent,
     StationFormComponent,
     CardFormComponent,
+    StatsComponent,
   ],
   imports: [
     BrowserModule,

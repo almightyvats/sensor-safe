@@ -1,6 +1,7 @@
 package com.almightyvats.sensorsafe.controller;
 
 import com.almightyvats.sensorsafe.core.util.ReadingPayload;
+import com.almightyvats.sensorsafe.model.custom.SanityCheckCount;
 import com.almightyvats.sensorsafe.service.ReadingService;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,13 @@ public class ReadingController {
         return ResponseEntity.ok("Reading saved successfully");
     }
 
-    @GetMapping("/all/{name}")
-    public ResponseEntity<List<Document>> getAllReadings(@PathVariable String name) {
-        return ResponseEntity.ok(readingService.getReadingsBySensorName(name));
+    @GetMapping("/all/{id}")
+    public ResponseEntity<List<Document>> getAllReadings(@PathVariable String id) {
+        return ResponseEntity.ok(readingService.getReadingsBySensorId(id));
+    }
+
+    @GetMapping("/all/count/{id}")
+    public ResponseEntity<List<SanityCheckCount>> getAllReadingsCount(@PathVariable String id) {
+        return ResponseEntity.ok(readingService.getSanityCheckTypeCountBySensorId(id));
     }
 }

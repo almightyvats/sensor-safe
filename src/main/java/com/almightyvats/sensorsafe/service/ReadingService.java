@@ -4,11 +4,14 @@ import com.almightyvats.sensorsafe.core.TsDbManager;
 import com.almightyvats.sensorsafe.core.util.HardwareNameUtil;
 import com.almightyvats.sensorsafe.core.util.ReadingPayload;
 import com.almightyvats.sensorsafe.model.Sensor;
+import com.almightyvats.sensorsafe.model.custom.SanityCheckCount;
+import com.almightyvats.sensorsafe.model.custom.SanityCheckType;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -55,14 +58,34 @@ public class ReadingService {
      *
      * @return the list of entities.
      */
-    public List<Document> getReadingsBySensorName(String sensorName) {
+    public List<Document> getReadingsBySensorId(String id) {
         log.debug("Request to get all Readings");
-        Sensor sensor = sensorService.findByName(sensorName);
+        Sensor sensor = sensorService.findById(id);
         if (sensor == null) {
-            log.error("Sensor not found with name: {}", sensorName);
+            log.error("Sensor not found with id: {}", id);
             return null;
         }
         return tsDbManager.getReadingsBySensor(sensor.getUniqueHardwareName());
+    }
+
+    /**
+     * Get the filtered list of SanityCheckType with count of each type for the given sensor name.
+     *
+     * @return the list of SanityCheckType with count of each type.
+     */
+    public List<SanityCheckCount> getSanityCheckTypeCountBySensorId(String id) {
+        log.debug("Request to get SanityCheckType count for sensor: {}", id);
+        Sensor sensor = sensorService.findById(id);
+        if (sensor == null) {
+            log.error("Sensor not found with id: {}", id);
+            return null;
+        }
+
+        List<SanityCheckCount> sanityCheckCountList = new ArrayList<>();
+         for (SanityCheckType sanityCheckType : SanityCheckType.values()) {
+             sanityCheckCountList.add(new SanityCheckCount(sanityCheckType, tsDbManager.getSanityCheckTypeCountBySensor(sensor.getUniqueHardwareName(), sanityCheckType)));
+         }
+         return sanityCheckCountList;
     }
 
     /**

@@ -4,6 +4,7 @@ import {SharedService} from "../shared.service";
 import {MatDialog} from "@angular/material/dialog";
 import {CardFormComponent} from "./card.form/card.form.component";
 import {ISensor} from "./sensor.interface";
+import {StatsComponent} from "./stats/stats.component";
 
 @Component({
   selector: 'app-card',
@@ -77,6 +78,18 @@ export class CardComponent implements OnInit {
     this.dialog.open(CardFormComponent, {
       data: data,
       width: '100%',
+      maxWidth: '600px',
+    });
+  }
+
+  openStats(sensorId: any) {
+    const data = {
+      sensorId: sensorId,
+    };
+
+    this.dialog.open(StatsComponent, {
+      data: data,
+      width: '500%',
       maxWidth: '600px',
     });
   }

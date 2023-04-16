@@ -1,5 +1,6 @@
 package com.almightyvats.sensorsafe.core;
 
+import com.almightyvats.sensorsafe.model.custom.SanityCheckType;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -148,6 +149,19 @@ public class TsDbManager {
      */
     public void deleteAllDocuments() {
         database.getCollection(collectionName).deleteMany(new Document());
+    }
+
+    /**
+     * Returns a count of sanity check type for the given sensor name.
+     *
+     * @param uniqueHardwareName the uniqueHardwareName of a sensor
+     * @param sanityCheckType the type of sanity check
+     * @return int
+     */
+    public int getSanityCheckTypeCountBySensor(String uniqueHardwareName, SanityCheckType sanityCheckType) {
+        return (int) database.getCollection(collectionName)
+                .countDocuments(new Document("uniqueHardwareName", uniqueHardwareName)
+                        .append("sanityFlag", sanityCheckType.toString()));
     }
 }
 

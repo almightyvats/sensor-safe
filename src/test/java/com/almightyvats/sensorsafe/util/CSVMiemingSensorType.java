@@ -7,6 +7,7 @@ public enum CSVMiemingSensorType {
     Tair_C("Tair_C", 1),
     RH_percent("RH_percent", 2),
     GlobRad_Wm_2("GlobRad_Wm-2", 3),
+    // TODO: Change the number to 4
     SWC_1_5cm_m3m_3("SWC_1.5cm_m3m-3", 3),
     SWC_1_10cm_m3m_3("SWC_1.10cm_m3m-3", 4),
     SWC_1_20cm_m3m_3("SWC_1.20cm_m3m-3", 5),
