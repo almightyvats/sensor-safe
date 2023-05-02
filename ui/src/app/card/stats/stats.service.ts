@@ -21,4 +21,9 @@ export class StatsService {
     const url = this.readingBaseUrl + 'all/count/' + id;
     return this.http.get<any[]>(url);
   }
+
+  downloadSensorData(id: string): Observable<any> {
+    const url = this.readingBaseUrl + 'download/' + id;
+    return this.http.get(url, { responseType: 'blob' });
+  }
 }

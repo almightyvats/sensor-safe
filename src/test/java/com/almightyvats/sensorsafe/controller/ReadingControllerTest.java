@@ -50,7 +50,7 @@ class ReadingControllerTest {
     @Autowired
     private ObjectMapper mapper;
 
-    @BeforeAll
+    //@BeforeAll
     void setUp() {
         log.info("Setting up test data");
         stationService.save(ModelUtil.createStation(TestConstants.STATION_ID_1, TestConstants.STATION_NAME_1,
@@ -59,7 +59,7 @@ class ReadingControllerTest {
                 CSVMiemingSensorType.Tair_C.getName(), SensorType.AIR_TEMPERATURE));
     }
 
-    @AfterAll
+    //@AfterAll
     void tearDown() throws JsonProcessingException {
         log.info("Deleting test data");
         if (sensorService.findAll().size() != 0) {

@@ -5,6 +5,8 @@ import com.almightyvats.sensorsafe.model.custom.SanityCheckCount;
 import com.almightyvats.sensorsafe.service.ReadingService;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,5 +34,18 @@ public class ReadingController {
     @GetMapping("/all/count/{id}")
     public ResponseEntity<List<SanityCheckCount>> getAllReadingsCount(@PathVariable String id) {
         return ResponseEntity.ok(readingService.getSanityCheckTypeCountBySensorId(id));
+    }
+
+    @GetMapping("/download/{id}")
+    public ResponseEntity<byte[]> downloadCSV(@PathVariable String id) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", (id + ".csv"));
+        byte[] csvBytes = readingService.downloadCsv(id);
+        headers.setContentLength(csvBytes.length);
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(csvBytes);
     }
 }

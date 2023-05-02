@@ -5,6 +5,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {CardFormComponent} from "./card.form/card.form.component";
 import {ISensor} from "./sensor.interface";
 import {StatsComponent} from "./stats/stats.component";
+import {StatsService} from "./stats/stats.service";
 
 @Component({
   selector: 'app-card',
@@ -17,7 +18,8 @@ export class CardComponent implements OnInit {
   currentSensors!: ISensor[];
   currentStation!: any;
 
-  constructor(private userService: CardService, private sharedService: SharedService, private dialog: MatDialog) {
+  constructor(private userService: CardService, private sharedService: SharedService, private dialog: MatDialog,
+              private statService: StatsService) {
     this.getAllSensors();
   }
 
@@ -91,6 +93,21 @@ export class CardComponent implements OnInit {
       data: data,
       width: '500%',
       maxWidth: '600px',
+    });
+  }
+
+  download(sensorId: any) {
+    this.statService.downloadSensorData(sensorId).subscribe((res: any) => {
+      const blob = new Blob([res], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.setAttribute('style', 'display:none;');
+      document.body.appendChild(a);
+      a.href = url;
+      a.download = 'example.csv';
+      a.click();
+      window.URL.revokeObjectURL(url);
+      a.remove(); // remove the element from the DOM
     });
   }
 }

@@ -1,6 +1,7 @@
 package com.almightyvats.sensorsafe.service;
 
 import com.almightyvats.sensorsafe.core.TsDbManager;
+import com.almightyvats.sensorsafe.core.util.CSVManager;
 import com.almightyvats.sensorsafe.core.util.HardwareNameUtil;
 import com.almightyvats.sensorsafe.core.util.ReadingPayload;
 import com.almightyvats.sensorsafe.model.Sensor;
@@ -83,9 +84,24 @@ public class ReadingService {
 
         List<SanityCheckCount> sanityCheckCountList = new ArrayList<>();
          for (SanityCheckType sanityCheckType : SanityCheckType.values()) {
-             sanityCheckCountList.add(new SanityCheckCount(sanityCheckType, tsDbManager.getSanityCheckTypeCountBySensor(sensor.getUniqueHardwareName(), sanityCheckType)));
+             sanityCheckCountList.add(new SanityCheckCount(sanityCheckType,
+                     tsDbManager.getSanityCheckTypeCountBySensor(sensor.getUniqueHardwareName(), sanityCheckType)));
          }
          return sanityCheckCountList;
+    }
+
+    /**
+     * Download csv file for the given sensor name.
+     * @return the csv byte[]
+     */
+    public byte[] downloadCsv(String id) {
+        log.debug("Request to download csv for sensor: {}", id);
+        Sensor sensor = sensorService.findById(id);
+        if (sensor == null) {
+            log.error("Sensor not found with id: {}", id);
+            return null;
+        }
+        return CSVManager.createCSVFile(tsDbManager.getReadingsBySensor(sensor.getUniqueHardwareName()));
     }
 
     /**
