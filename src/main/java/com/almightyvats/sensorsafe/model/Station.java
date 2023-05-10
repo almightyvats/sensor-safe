@@ -13,6 +13,7 @@ public class Station {
     @Id
     private String id;
     private String name;
+    private String email;
     private String macAddress;
     private String location;
     private List<String> sensors = new ArrayList<>();

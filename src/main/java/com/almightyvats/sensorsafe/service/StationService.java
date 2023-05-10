@@ -82,6 +82,7 @@ public class StationService {
             return null;
         }
         station.setName(stationToUpdate.getName());
+        station.setEmail(stationToUpdate.getEmail());
         station.setSensors(stationToUpdate.getSensors());
         station.setMacAddress(stationToUpdate.getMacAddress());
         station.setLocation(stationToUpdate.getLocation());
@@ -97,6 +98,41 @@ public class StationService {
         }
         station.getSensors().add(sensorId);
         stationRepository.save(station);
+    }
+
+    // TODO: Add a method to remove a sensor from a station
+
+    /**
+     * Get one station id by sensor id.
+     *
+     * @param id the id of the sensor.
+     * @return the sensor id.
+     */
+    public String findStationIdBySensorId(String id) {
+        log.debug("Request to get Station id for Sensor : {}", id);
+        List<Station> stations = stationRepository.findAll();
+        for(Station station : stations) {
+            if(station.getSensors().contains(id)) {
+                return station.getId();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Get email of the station by station id.
+     *
+     * @param id the id of the station.
+     * @return the email.
+     */
+    public String findEmailByStationId(String id) {
+        log.debug("Request to get email for Station : {}", id);
+        Station station = stationRepository.findById(id).orElse(null);
+        if(station == null) {
+            log.error("Station with id {} does not exist", id);
+            return null;
+        }
+        return station.getEmail();
     }
 
     /**
