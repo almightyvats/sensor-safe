@@ -29,6 +29,9 @@ public class ReadingService {
     @Autowired
     private StationService stationService;
 
+    @Autowired
+    private EmailService emailService;
+
     /**
      * Save a reading.
      *
@@ -42,13 +45,14 @@ public class ReadingService {
             List<SanityCheckType> sanityCheckTypes = new ArrayList<>();
             if (!sanityCheckTypes.contains(SanityCheckType.NO_ERROR)) {
                 Sensor sensor = sensorService.findByName(reading.getSensorName());
-                assert sensor != null;
+                log.error("Sensor not found with id: {}", sensor.getId());
                 String stationId = stationService.findStationIdBySensorId(sensor.getId());
-                assert stationId != null;
+                log.error("Station not found with sensor id: {}", sensor.getId());
                 String email = stationService.findEmailByStationId(stationId);
-                assert email != null;
+                log.error("Email not found with station id: {}", stationId);
                 // TODO: Send email to the station owner
             }
+            emailService.sendEmail("anuragfreevats@gmail.com", "Test", "Test");
             Document document = getDocument(reading);
             tsDbManager.insert(document);
         } catch (Exception e) {

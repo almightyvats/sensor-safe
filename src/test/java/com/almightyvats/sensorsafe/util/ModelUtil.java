@@ -70,12 +70,14 @@ public class ModelUtil {
         return sensor;
     }
 
-    public static Station createStation(String stationId, String stationName, String macAddress, String stationLocation) {
+    public static Station createStation(String stationId, String stationName, String macAddress, String stationLocation,
+                                        String email) {
         Station station = new Station();
         station.setId(stationId);
         station.setName(stationName);
         station.setMacAddress(macAddress);
         station.setLocation(stationLocation);
+        station.setEmail(email);
         return station;
     }
 

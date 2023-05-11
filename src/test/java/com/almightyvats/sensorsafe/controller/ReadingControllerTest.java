@@ -51,10 +51,11 @@ class ReadingControllerTest {
     private ObjectMapper mapper;
 
     //@BeforeAll
+    @Test
     void setUp() {
         log.info("Setting up test data");
         stationService.save(ModelUtil.createStation(TestConstants.STATION_ID_1, TestConstants.STATION_NAME_1,
-                TestConstants.STATION_MAC_ADDRESS_1, TestConstants.STATION_LOCATION_1));
+                TestConstants.STATION_MAC_ADDRESS_1, TestConstants.STATION_LOCATION_1, TestConstants.STATION_EMAIL_1));
         sensorService.save(TestConstants.STATION_ID_1, ModelUtil.createSensor(TestConstants.SENSOR_ID_1,
                 CSVMiemingSensorType.Tair_C.getName(), SensorType.AIR_TEMPERATURE));
     }

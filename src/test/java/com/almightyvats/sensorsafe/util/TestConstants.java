@@ -44,4 +44,6 @@ public class TestConstants {
     // data file paths
     public static final String DATA_FILE_PATH_MIEMING_SUBSET = "src/test/resources/data/data_subset.csv";
     public static final String DATA_FILE_PATH_MIEMING = "src/test/resources/data/mieming.csv";
+    //email
+    public static final String STATION_EMAIL_1 = "anuragfreevats@gmail.com";
 }

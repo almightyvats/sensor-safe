@@ -39,7 +39,7 @@ class StationControllerTest {
     void setUp() {
         log.info("Setting up test data");
         Station station = ModelUtil.createStation(TestConstants.STATION_ID_1, TestConstants.STATION_NAME_1,
-                TestConstants.STATION_MAC_ADDRESS_1, TestConstants.STATION_LOCATION_1);
+                TestConstants.STATION_MAC_ADDRESS_1, TestConstants.STATION_LOCATION_1, TestConstants.STATION_EMAIL_1);
         stationService.save(station);
     }
 
@@ -77,7 +77,7 @@ class StationControllerTest {
     void saveStation() throws Exception {
         log.info("Testing saveStation");
         Station station = ModelUtil.createStation(TestConstants.STATION_ID_2, TestConstants.STATION_NAME_2,
-                TestConstants.STATION_MAC_ADDRESS_2, TestConstants.STATION_LOCATION_2);
+                TestConstants.STATION_MAC_ADDRESS_2, TestConstants.STATION_LOCATION_2, TestConstants.STATION_EMAIL_1);
         String json = mapper.writeValueAsString(station);
         mockMvc.perform(post("/v1/station/add")
                 .contentType(MediaType.APPLICATION_JSON)

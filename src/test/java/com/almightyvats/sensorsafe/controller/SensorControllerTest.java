@@ -46,7 +46,7 @@ class SensorControllerTest {
     void setUp() {
         log.info("Setting up test data");
         Station station = ModelUtil.createStation(TestConstants.STATION_ID_1, TestConstants.STATION_NAME_1,
-                TestConstants.STATION_MAC_ADDRESS_1, TestConstants.STATION_LOCATION_1);
+                TestConstants.STATION_MAC_ADDRESS_1, TestConstants.STATION_LOCATION_1, TestConstants.STATION_EMAIL_1);
         stationService.save(station);
 
         Sensor sensor = ModelUtil.createSensor(TestConstants.SENSOR_ID_1, TestConstants.SENSOR_NAME_1,
