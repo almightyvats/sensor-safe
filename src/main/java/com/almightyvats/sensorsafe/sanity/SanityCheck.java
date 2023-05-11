@@ -9,7 +9,9 @@ import com.almightyvats.sensorsafe.service.SensorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class SanityCheck {
@@ -17,7 +19,7 @@ public class SanityCheck {
     @Autowired
     private SensorService sensorService;
 
-    public SanityCheckType check(ReadingPayload readingPayload) {
+    public List<SanityCheckType> check(ReadingPayload readingPayload) {
         Sensor sensor = sensorService.findByName(readingPayload.getSensorName());
         assert sensor != null;
         String sensorHardwareName = sensor.getUniqueHardwareName();
@@ -28,20 +30,22 @@ public class SanityCheck {
         return getSanityCheckType(sensorHardwareName, timestamp, value, sensorType, sensorProperty);
     }
 
-    private SanityCheckType getSanityCheckType(String sensorHardwareName, Date timestamp, Double value,
+    private List<SanityCheckType> getSanityCheckType(String sensorHardwareName, Date timestamp, Double value,
                                                SensorType sensorType, SensorProperty sensorProperty) {
+        List<SanityCheckType> sanityCheckTypeList = new ArrayList<>();
         if (value.isNaN()) {
-            return SanityCheckType.READING_NAN;
+            sanityCheckTypeList.add(SanityCheckType.READING_NAN);
+            return sanityCheckTypeList;
         }
         if(!SanityCheckUtil.isValueWithinRange(value, sensorProperty)) {
             if (value < sensorProperty.getMinValue()) {
-                return SanityCheckType.READING_TOO_LOW;
+                sanityCheckTypeList.add(SanityCheckType.READING_TOO_LOW);
             } else {
-                return SanityCheckType.READING_TOO_HIGH;
+                sanityCheckTypeList.add(SanityCheckType.READING_TOO_HIGH);
             }
         }
 
-        return SanityCheckType.NO_ERROR;
+        return sanityCheckTypeList;
     }
 
 }

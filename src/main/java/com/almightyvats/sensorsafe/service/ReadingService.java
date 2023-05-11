@@ -26,6 +26,9 @@ public class ReadingService {
     @Autowired
     private SensorService sensorService;
 
+    @Autowired
+    private StationService stationService;
+
     /**
      * Save a reading.
      *
@@ -36,6 +39,16 @@ public class ReadingService {
         try {
             log.debug("Request to save Reading : {}", reading);
             //TODO: Sanity check shall be applied here
+            List<SanityCheckType> sanityCheckTypes = new ArrayList<>();
+            if (!sanityCheckTypes.contains(SanityCheckType.NO_ERROR)) {
+                Sensor sensor = sensorService.findByName(reading.getSensorName());
+                assert sensor != null;
+                String stationId = stationService.findStationIdBySensorId(sensor.getId());
+                assert stationId != null;
+                String email = stationService.findEmailByStationId(stationId);
+                assert email != null;
+                // TODO: Send email to the station owner
+            }
             Document document = getDocument(reading);
             tsDbManager.insert(document);
         } catch (Exception e) {
