@@ -51,8 +51,8 @@ public class ReadingService {
                 String email = stationService.findEmailByStationId(stationId);
                 log.error("Email not found with station id: {}", stationId);
                 // TODO: Send email to the station owner
+                emailService.sendEmail("anuragfreevats@gmail.com", "Test", "Test");
             }
-            emailService.sendEmail("anuragfreevats@gmail.com", "Test", "Test");
             Document document = getDocument(reading);
             tsDbManager.insert(document);
         } catch (Exception e) {

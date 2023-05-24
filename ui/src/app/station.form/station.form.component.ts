@@ -9,6 +9,7 @@ export interface IStation {
   name: string;
   macAddress: string;
   location: string;
+  email: string;
 }
 
 @Component({
@@ -41,6 +42,7 @@ export class StationFormComponent implements OnInit {
       name: new FormControl(this.station.name, [Validators.required]),
       macAddress: new FormControl(this.station.macAddress, [Validators.required]),
       location: new FormControl(this.station.location),
+      email: new FormControl(this.station.email, [Validators.required, Validators.email]),
     });
   }
 
