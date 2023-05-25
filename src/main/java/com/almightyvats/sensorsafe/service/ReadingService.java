@@ -5,6 +5,7 @@ import com.almightyvats.sensorsafe.core.util.CSVManager;
 import com.almightyvats.sensorsafe.core.util.HardwareNameUtil;
 import com.almightyvats.sensorsafe.core.util.ReadingPayload;
 import com.almightyvats.sensorsafe.model.Sensor;
+import com.almightyvats.sensorsafe.model.Station;
 import com.almightyvats.sensorsafe.model.custom.SanityCheckCount;
 import com.almightyvats.sensorsafe.model.custom.SanityCheckType;
 import com.almightyvats.sensorsafe.sanity.SanityCheck;
@@ -41,7 +42,6 @@ public class ReadingService {
      * Save a reading.
      *
      * @param reading the entity to save.
-     * @return the persisted entity.
      */
     public void save(ReadingPayload reading) {
         try {
@@ -58,11 +58,12 @@ public class ReadingService {
             }
             if (!sanityCheckTypes.contains(SanityCheckType.NO_ERROR)) {
                 String stationId = stationService.findStationIdBySensorId(sensor.getId());
+                Station station = stationService.findById(stationId);
                 log.error("Station not found with sensor id: {}", sensor.getId());
                 String email = stationService.findEmailByStationId(stationId);
                 log.error("Email not found with station id: {}", stationId);
-                // TODO: Send email to the station owner
-                emailService.sendEmail("anuragfreevats@gmail.com", "Test", "Test");
+                emailService.sendEmail(email, sensor.getName(), station.getName(), new Date(reading.getTimestamp() * 1000L),
+                        sanityCheckTypes);
             }
             Document document = getDocument(reading);
             tsDbManager.insert(document);

@@ -4,7 +4,6 @@ import com.almightyvats.sensorsafe.core.util.ReadingPayload;
 import com.almightyvats.sensorsafe.model.Sensor;
 import com.almightyvats.sensorsafe.model.custom.SanityCheckType;
 import com.almightyvats.sensorsafe.model.custom.SensorProperty;
-import com.almightyvats.sensorsafe.model.custom.SensorType;
 import com.almightyvats.sensorsafe.sanity.util.ReadingsForSanity;
 import com.almightyvats.sensorsafe.sanity.util.SanityCheckUtil;
 import com.almightyvats.sensorsafe.service.SensorService;
@@ -24,16 +23,13 @@ public class SanityCheck {
     public List<SanityCheckType> check(ReadingPayload readingPayload) {
         Sensor sensor = sensorService.findByName(readingPayload.getSensorName());
         assert sensor != null;
-        String sensorHardwareName = sensor.getUniqueHardwareName();
-        SensorType sensorType = sensor.getType();
         Double value = readingPayload.getValue();
         Date timestamp = new Date(readingPayload.getTimestamp() * 1000);
         SensorProperty sensorProperty = sensor.getParameters();
-        return getSanityCheckType(sensor.getId(), sensorHardwareName, timestamp, value, sensorType, sensorProperty);
+        return getSanityCheckType(sensor.getId(), timestamp, value, sensorProperty);
     }
 
-    private List<SanityCheckType> getSanityCheckType(String sensorId, String sensorHardwareName, Date timestamp, Double value,
-                                               SensorType sensorType, SensorProperty sensorProperty) {
+    private List<SanityCheckType> getSanityCheckType(String sensorId, Date timestamp, Double value, SensorProperty sensorProperty) {
         List<SanityCheckType> sanityCheckTypeList = new ArrayList<>();
         if (value.isNaN()) {
             sanityCheckTypeList.add(SanityCheckType.READING_NAN);
