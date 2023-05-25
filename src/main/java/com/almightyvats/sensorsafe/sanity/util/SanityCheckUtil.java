@@ -10,6 +10,7 @@ import smile.math.MathEx;
 
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 @Component
 public class SanityCheckUtil {
@@ -19,6 +20,7 @@ public class SanityCheckUtil {
 
     private static final double SPIKE_THRESHOLD = 3.5;
     private static final int GAP_THRESHOLD = 5; // hours
+    private static final long A_DAY_IN_MILLISECONDS = 86399999L;
 
     public static boolean isValueWithinRange(double value, SensorProperty sensorProperty) {
         return value >= sensorProperty.getMinValue() && value <= sensorProperty.getMaxValue();
@@ -28,6 +30,10 @@ public class SanityCheckUtil {
         List<Document> readings =  readingService.getReadingsBySensorIdAndTimestampRange(sensorId, from, to);
         assert readings != null;
         return readings;
+    }
+
+    public static long getNumberOfReadingsForSensor(String sensorId) {
+        return readingService.getCountBySensorId(sensorId);
     }
 
     public static boolean isAlreadyInDatabase(String sensorId, double value, Date date) {
@@ -77,9 +83,16 @@ public class SanityCheckUtil {
         return rateOfChangePerHour;
     }
 
-    public static boolean isGapTooBig(Date timestamp_current, Date timestamp_previous, double maxReadoutDifference) {
+    public static boolean isGapTooBig(Date timestamp_current, Date timestamp_previous) {
         return getTimeDifferenceInHours(timestamp_current, timestamp_previous) >=  GAP_THRESHOLD;
     }
+
+    // function to get 24 hours before a given date
+    public static Date get24HoursBefore(Date requestedDate) {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        return new Date(requestedDate.getTime() - A_DAY_IN_MILLISECONDS);
+    }
+
 
     // function for calculating the time difference between two timestamps in hours
     public static double getTimeDifferenceInHours(Date date1, Date date2) {

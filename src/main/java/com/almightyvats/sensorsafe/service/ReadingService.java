@@ -150,6 +150,20 @@ public class ReadingService {
     }
 
     /**
+     * Get the count of all the readings with sensorId.
+     * @return the count.
+     */
+    public long getCountBySensorId(String id) {
+        log.debug("Request to get count of all Readings");
+        Sensor sensor = sensorService.findById(id);
+        if (sensor == null) {
+            log.error("Sensor not found with id: {}", id);
+            return 0;
+        }
+        return tsDbManager.getNumberOfDocumentsBySensor(sensor.getUniqueHardwareName());
+    }
+
+    /**
      * FOR TESTING PURPOSES ONLY
      * Get the count of all the readings.
      * @return the count of all the readings.
