@@ -87,6 +87,21 @@ public class ReadingService {
     }
 
     /**
+     * Get readings with sensorId and timestamp range.
+     *
+     * @return the list of entities.
+     */
+    public List<Document> getReadingsBySensorIdAndTimestampRange(String id, Date from, Date to) {
+        log.debug("Request to get all Readings");
+        Sensor sensor = sensorService.findById(id);
+        if (sensor == null) {
+            log.error("Sensor not found with id: {}", id);
+            return null;
+        }
+        return tsDbManager.getReadingsBySensorAndTimeRange(sensor.getUniqueHardwareName(), from, to);
+    }
+
+    /**
      * Get the filtered list of SanityCheckType with count of each type for the given sensor name.
      *
      * @return the list of SanityCheckType with count of each type.

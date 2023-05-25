@@ -5,6 +5,7 @@ import com.almightyvats.sensorsafe.model.Sensor;
 import com.almightyvats.sensorsafe.model.custom.SanityCheckType;
 import com.almightyvats.sensorsafe.model.custom.SensorProperty;
 import com.almightyvats.sensorsafe.model.custom.SensorType;
+import com.almightyvats.sensorsafe.sanity.util.SanityCheckUtil;
 import com.almightyvats.sensorsafe.service.SensorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

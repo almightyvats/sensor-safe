@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
@@ -102,7 +103,7 @@ public class TsDbManager {
      * @param from the start time of the time range
      * @param to the end time of the time range
      */
-    public List<Document> getReadingsBySensorAndTimeRange(String uniqueHardwareName, long from, long to) {
+    public List<Document> getReadingsBySensorAndTimeRange(String uniqueHardwareName, Date from, Date to) {
         return database.getCollection(collectionName)
                 .find(new Document("uniqueHardwareName", uniqueHardwareName)
                         .append("timestamp", new Document("$gte", from).append("$lte", to)))
