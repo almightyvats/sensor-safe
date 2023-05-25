@@ -111,6 +111,18 @@ public class TsDbManager {
     }
 
     /**
+     * Check if a document with certain properties exists in the database
+     *
+     * @param query the query to be checked
+     * @return boolean
+     */
+    public boolean checkIfDocumentExists(Document query) {
+        return database.getCollection(collectionName)
+                .find(query)
+                .into(new ArrayList<>()).size() > 0;
+    }
+
+    /**
      * Drops the collection from the database
      */
     public void dropCollection() {

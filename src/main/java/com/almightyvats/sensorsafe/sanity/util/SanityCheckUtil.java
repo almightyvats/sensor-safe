@@ -1,6 +1,7 @@
 package com.almightyvats.sensorsafe.sanity.util;
 
 import com.almightyvats.sensorsafe.model.custom.SensorProperty;
+import com.almightyvats.sensorsafe.model.custom.SensorType;
 import com.almightyvats.sensorsafe.service.ReadingService;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,5 +24,13 @@ public class SanityCheckUtil {
         List<Document> readings =  readingService.getReadingsBySensorIdAndTimestampRange(sensorId, from, to);
         assert readings != null;
         return readings;
+    }
+
+    public static boolean isAlreadyInDatabase(String sensorId, double value, Date date) {
+        Document query = new Document();
+        query.append("timestamp", date);
+        query.append("value", value);
+
+        return readingService.ifDocumentExists(sensorId, query);
     }
 }

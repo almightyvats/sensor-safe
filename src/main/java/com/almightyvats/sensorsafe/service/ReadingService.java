@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -99,6 +100,18 @@ public class ReadingService {
             return null;
         }
         return tsDbManager.getReadingsBySensorAndTimeRange(sensor.getUniqueHardwareName(), from, to);
+    }
+
+    /**
+     * Check if document exists in the database
+     *
+     * @return boolean
+     */
+    public boolean ifDocumentExists(String sensorId, Document query) {
+        String uniqueHardwareName = Objects.requireNonNull(sensorService.findById(sensorId))
+                .getUniqueHardwareName();
+        query.append("uniqueHardwareName", uniqueHardwareName);
+        return tsDbManager.checkIfDocumentExists(query);
     }
 
     /**
