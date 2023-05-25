@@ -7,6 +7,7 @@ import com.almightyvats.sensorsafe.core.util.ReadingPayload;
 import com.almightyvats.sensorsafe.model.Sensor;
 import com.almightyvats.sensorsafe.model.custom.SanityCheckCount;
 import com.almightyvats.sensorsafe.model.custom.SanityCheckType;
+import com.almightyvats.sensorsafe.sanity.SanityCheck;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ public class ReadingService {
     private StationService stationService;
 
     @Autowired
+    private SanityCheck sanityCheck;
+
+    @Autowired
     private EmailService emailService;
 
     /**
@@ -42,11 +46,17 @@ public class ReadingService {
     public void save(ReadingPayload reading) {
         try {
             log.debug("Request to save Reading : {}", reading);
-            //TODO: Sanity check shall be applied here
-            List<SanityCheckType> sanityCheckTypes = new ArrayList<>();
+            List<SanityCheckType> sanityCheckTypes = new ArrayList<>(sanityCheck.check(reading));
+            Sensor sensor = sensorService.findByName(reading.getSensorName());
+            if (sensor == null) {
+                log.error("Sensor not found with name: {}", reading.getSensorName());
+                return;
+            }
+            if (!sensor.getParameters().isEnable()) {
+                log.debug("Sanity check is disabled for sensor: {}", sensor.getName());
+                return;
+            }
             if (!sanityCheckTypes.contains(SanityCheckType.NO_ERROR)) {
-                Sensor sensor = sensorService.findByName(reading.getSensorName());
-                log.error("Sensor not found with id: {}", sensor.getId());
                 String stationId = stationService.findStationIdBySensorId(sensor.getId());
                 log.error("Station not found with sensor id: {}", sensor.getId());
                 String email = stationService.findEmailByStationId(stationId);

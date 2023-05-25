@@ -65,6 +65,10 @@ public class SanityCheck {
                             sanityCheckTypeList.add(SanityCheckType.READING_INVALID_SPIKE);
                         }
                     }
+                    if (SanityCheckUtil.getRateOfChangePerHour(readingsForSanity.getLastReading(), value, timestamp) >
+                            sensorProperty.getMaxRateOfChange()) {
+                        sanityCheckTypeList.add(SanityCheckType.READING_ABOVE_RATE_OF_CHANGE);
+                    }
                 }
             }
         }
