@@ -1,4 +1,4 @@
-package com.almightyvats.sensorsafe.util;
+package com.almightyvats.sensorsafe.util.csv;
 
 import lombok.extern.slf4j.Slf4j;
 

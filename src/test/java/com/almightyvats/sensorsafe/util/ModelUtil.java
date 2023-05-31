@@ -81,12 +81,12 @@ public class ModelUtil {
         return station;
     }
 
-    public static ReadingPayload createReading(String sensorName, String stationMacAddress, Date timestamp, double value) {
+    public static ReadingPayload createReading(String sensorName, String stationMacAddress, long timestamp, double value) {
         ReadingPayload reading = new ReadingPayload();
         reading.setSensorName(sensorName);
         reading.setStationMacAddress(stationMacAddress);
         reading.setUniqueHardwareName(HardwareNameUtil.getUniqueHardwareName(sensorName, stationMacAddress));
-        reading.setTimestamp(timestamp.getTime()/1000);
+        reading.setTimestamp(timestamp/1000);
         reading.setValue(value);
         return reading;
     }

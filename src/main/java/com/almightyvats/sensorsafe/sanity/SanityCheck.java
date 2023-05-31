@@ -68,8 +68,9 @@ public class SanityCheck {
                 }
             }
         }
-
+        if (sanityCheckTypeList.isEmpty()) {
+            sanityCheckTypeList.add(SanityCheckType.NO_ERROR);
+        }
         return sanityCheckTypeList;
     }
-
 }

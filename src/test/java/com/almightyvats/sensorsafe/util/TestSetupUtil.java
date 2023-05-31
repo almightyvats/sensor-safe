@@ -1,20 +1,25 @@
 package com.almightyvats.sensorsafe.util;
 
 import com.almightyvats.sensorsafe.model.custom.SensorType;
+import com.almightyvats.sensorsafe.service.ReadingService;
 import com.almightyvats.sensorsafe.service.SensorService;
 import com.almightyvats.sensorsafe.service.StationService;
+import com.almightyvats.sensorsafe.util.csv.CSVMiemingSensorType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class TestDataUtil {
+public class TestSetupUtil {
 
     @Autowired
     private StationService stationService;
 
     @Autowired
     private SensorService sensorService;
+
+    @Autowired
+    private ReadingService readingService;
 
     @Test
     void setUp() {
@@ -35,5 +40,12 @@ public class TestDataUtil {
                 CSVMiemingSensorType.Dendrometer_2_micro_m.getName(), SensorType.DENDROMETER));
         sensorService.save(TestConstants.STATION_ID_2, ModelUtil.createSensor(TestConstants.SENSOR_ID_6,
                 CSVMiemingSensorType.Dendrometer_3_micro_m.getName(), SensorType.DENDROMETER));
+    }
+
+    @Test
+    void tearDown() {
+        sensorService.deleteAll();
+        stationService.deleteAll();
+        readingService.deleteAll();
     }
 }

@@ -14,9 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
@@ -174,7 +172,7 @@ public class TsDbManager {
     public int getSanityCheckTypeCountBySensor(String uniqueHardwareName, SanityCheckType sanityCheckType) {
         return (int) database.getCollection(collectionName)
                 .countDocuments(new Document("uniqueHardwareName", uniqueHardwareName)
-                        .append("sanityFlag", sanityCheckType.toString()));
+                        .append("sanityFlag", new Document("$in", Collections.singletonList(sanityCheckType.toString()))));
     }
 }
 

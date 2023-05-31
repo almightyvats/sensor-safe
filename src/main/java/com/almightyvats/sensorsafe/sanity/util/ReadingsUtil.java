@@ -31,10 +31,7 @@ public class ReadingsUtil {
 
     // list of values for list of documents
     public static List<Double> getValues(List<Document> readings) {
-        return readings.stream().map(document -> {
-            List<Document> readingValues = document.getList("readings", Document.class);
-            return readingValues.get(0).getDouble("value");
-        }).toList();
+        return readings.stream().map(document -> document.getDouble("value")).toList();
     }
 
     // date of min value
@@ -52,9 +49,7 @@ public class ReadingsUtil {
                 : readings.stream().min(ReadingsUtil::compareByValues).get().getDate("timestamp");
     }
 
-    public static int compareByValues(Document o1, Document o2) {
-        List<Document> readingValues1 = o1.getList("readings", Document.class);
-        List<Document> readingValues2 = o2.getList("readings", Document.class);
-        return Double.compare(readingValues1.get(0).getDouble("value"), readingValues2.get(0).getDouble("value"));
+    private static int compareByValues(Document d1, Document d2) {
+        return Double.compare(d1.getDouble("value"), d2.getDouble("value"));
     }
 }

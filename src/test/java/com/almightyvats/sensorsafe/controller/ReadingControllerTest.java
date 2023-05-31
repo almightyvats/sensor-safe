@@ -5,8 +5,8 @@ import com.almightyvats.sensorsafe.model.custom.SensorType;
 import com.almightyvats.sensorsafe.service.ReadingService;
 import com.almightyvats.sensorsafe.service.SensorService;
 import com.almightyvats.sensorsafe.service.StationService;
-import com.almightyvats.sensorsafe.util.CSVMiemingSensorType;
-import com.almightyvats.sensorsafe.util.CSVReader;
+import com.almightyvats.sensorsafe.util.csv.CSVMiemingSensorType;
+import com.almightyvats.sensorsafe.util.csv.CSVReader;
 import com.almightyvats.sensorsafe.util.ModelUtil;
 import com.almightyvats.sensorsafe.util.TestConstants;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -61,6 +61,7 @@ class ReadingControllerTest {
     }
 
     //@AfterAll
+    @Test
     void tearDown() throws JsonProcessingException {
         log.info("Deleting test data");
         if (sensorService.findAll().size() != 0) {
@@ -82,7 +83,7 @@ class ReadingControllerTest {
                 CSVMiemingSensorType.Tair_C, 96, 0);
         for (Map.Entry<Date, Double> entry : miemingCSV.entrySet()) {
             ReadingPayload reading = ModelUtil.createReading(CSVMiemingSensorType.Tair_C.getName(),
-                    TestConstants.STATION_MAC_ADDRESS_1, entry.getKey(), entry.getValue());
+                    TestConstants.STATION_MAC_ADDRESS_1, entry.getKey().getTime(), entry.getValue());
             mockMvc.perform(post("/v1/reading/add")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(mapper.writeValueAsString(reading)))

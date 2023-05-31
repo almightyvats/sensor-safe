@@ -39,7 +39,7 @@ public class ReadingsForSanity {
             // only get the last SPIKE_WINDOW_SIZE readings
             subsetReadings = subsetReadings.subList(size - SPIKE_WINDOW_SIZE, size);
             // check if any of the readings is a spike if the errorStatus array in the reading contains INVALID_READING_VALUE_SPIKE
-            subsetReadings.removeIf(document -> document.get("errorStatus", List.class)
+            subsetReadings.removeIf(document -> document.get("sanityFlag", List.class)
                     .contains(SanityCheckType.READING_INVALID_SPIKE.name()));
         }
         return subsetReadings;

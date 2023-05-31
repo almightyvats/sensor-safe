@@ -56,16 +56,25 @@ public class ReadingService {
                 log.debug("Sanity check is disabled for sensor: {}", sensor.getName());
                 return;
             }
-            if (!sanityCheckTypes.contains(SanityCheckType.NO_ERROR)) {
+            if (!sanityCheckTypes.contains(SanityCheckType.NO_ERROR) &&
+                    (sanityCheckTypes.contains(SanityCheckType.READING_INVALID_SPIKE) ||
+                            sanityCheckTypes.contains(SanityCheckType.READING_INVALID_FROZEN_SENSOR) ||
+                            sanityCheckTypes.contains(SanityCheckType.READING_INVALID_GAP_TOO_BIG) )) {
                 String stationId = stationService.findStationIdBySensorId(sensor.getId());
                 Station station = stationService.findById(stationId);
-                log.error("Station not found with sensor id: {}", sensor.getId());
+                if (Objects.isNull(station)) {
+                    log.error("Station not found with id: {}", stationId);
+                }
                 String email = stationService.findEmailByStationId(stationId);
-                log.error("Email not found with station id: {}", stationId);
-                emailService.sendEmail(email, sensor.getName(), station.getName(), new Date(reading.getTimestamp() * 1000L),
-                        sanityCheckTypes);
+                if (Objects.isNull(email)) {
+                    log.error("Email not found with station id: {}", stationId);
+                }
+                log.info("Sending email to: {} with sanityTypes: {}", email, sanityCheckTypes);
+//                emailService.sendEmail(email, sensor.getName(), station.getName(), new Date(reading.getTimestamp() * 1000L),
+//                        sanityCheckTypes);
             }
             Document document = getDocument(reading);
+            document.put("sanityFlag", sanityCheckTypes);
             tsDbManager.insert(document);
         } catch (Exception e) {
             log.error("Error while saving reading", e);

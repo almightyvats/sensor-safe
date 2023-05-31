@@ -14,9 +14,10 @@ import java.util.TimeZone;
 
 @Component
 public class SanityCheckUtil {
-
-    @Autowired
     private static ReadingService readingService;
+    SanityCheckUtil(ReadingService readingService) {
+        SanityCheckUtil.readingService = readingService;
+    }
 
     private static final double SPIKE_THRESHOLD = 3.5;
     private static final int GAP_THRESHOLD = 5; // hours
