@@ -45,7 +45,7 @@ public class SanityCheckTest {
                 TestConstants.SENSOR_NAME_1, SensorType.AIR_TEMPERATURE));
     }
 
-//    @Test
+    //    @Test
     void deleteAll() {
         log.info("Deleting all data");
         readingService.deleteAll();
@@ -144,5 +144,51 @@ public class SanityCheckTest {
         }
         // Since the frozen time threshold is set for 5 hours, we expect 4 sanity check counts
         Assertions.assertEquals(4, sanityCheckValue);
+    }
+
+    @Test
+    @Order(5)
+    void testReadingGap() {
+        readingService.deleteAll();
+        log.info("Testing reading gap");
+        Long[] timestamps = TestDataGeneratorUtil.generateTimestamps(10, 1);
+        List<Double> values = TestDataGeneratorUtil.generateValueOutOfBoundsOfMaxRateOfChange(-50.0,
+                50.0, 10, 0, 0.5, 1);
+
+        for (int i = 0; i < 10; i++) {
+            if (i == 0 || i == 6) {
+                Double value = values.get(i);
+                readingService.save(ModelUtil.createReading(TestConstants.SENSOR_NAME_1, TestConstants.STATION_MAC_ADDRESS_1, timestamps[i], value));
+            }
+        }
+        List<SanityCheckCount> sanityCheckCounts = readingService.getSanityCheckTypeCountBySensorId(TestConstants.SENSOR_ID_1);
+        int sanityCheckValue = 0;
+        for (SanityCheckCount sanityCheckCount : sanityCheckCounts) {
+            if (sanityCheckCount.getSanityCheckType().equals(SanityCheckType.READING_INVALID_GAP_TOO_BIG)) {
+                sanityCheckValue += sanityCheckCount.getCount();
+            }
+        }
+        Assertions.assertEquals(1, sanityCheckValue);
+    }
+
+    @Test
+    @Order(6)
+    void testReadingSpike() {
+        readingService.deleteAll();
+        log.info("Testing reading spike");
+        Long[] timestamps = TestDataGeneratorUtil.generateTimestamps(12, 1);
+
+        for (int i = 0; i < 12; i++) {
+            double value = TestDataGeneratorUtil.incomingDataForSpikeDetection()[i];
+            readingService.save(ModelUtil.createReading(TestConstants.SENSOR_NAME_1, TestConstants.STATION_MAC_ADDRESS_1, timestamps[i], value));
+        }
+        List<SanityCheckCount> sanityCheckCounts = readingService.getSanityCheckTypeCountBySensorId(TestConstants.SENSOR_ID_1);
+        int sanityCheckValue = 0;
+        for (SanityCheckCount sanityCheckCount : sanityCheckCounts) {
+            if (sanityCheckCount.getSanityCheckType().equals(SanityCheckType.READING_INVALID_SPIKE)) {
+                sanityCheckValue += sanityCheckCount.getCount();
+            }
+        }
+        Assertions.assertEquals(2, sanityCheckValue);
     }
 }

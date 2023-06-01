@@ -129,4 +129,7 @@ public class TestDataGeneratorUtil {
 
         return sd / mean > variationCoefficient;
     }
+    public static double[] incomingDataForSpikeDetection() {
+        return new double[] { 5.5, 6.7, 5.9, 7.1, 5.2, 12.3, 6.9, 8.1, 7.2, 6.5, 15.0, 7.6 };
+    }
 }
