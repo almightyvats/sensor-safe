@@ -9,7 +9,6 @@ import com.almightyvats.sensorsafe.service.StationService;
 import com.almightyvats.sensorsafe.util.ModelUtil;
 import com.almightyvats.sensorsafe.util.TestConstants;
 import com.almightyvats.sensorsafe.util.TestDataGeneratorUtil;
-import com.almightyvats.sensorsafe.util.csv.CSVMiemingSensorType;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +16,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Date;
 import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
 @SpringBootTest
@@ -49,9 +45,17 @@ public class SanityCheckTest {
                 TestConstants.SENSOR_NAME_1, SensorType.AIR_TEMPERATURE));
     }
 
+//    @Test
+    void deleteAll() {
+        log.info("Deleting all data");
+        readingService.deleteAll();
+        sensorService.deleteAll();
+        stationService.deleteAll();
+    }
+
     @Test
     @Order(1)
-    void testReadingOutOfBounds() throws Exception {
+    void testReadingOutOfBounds() {
         log.info("Testing reading out of bounds");
         Long[] timestamps = TestDataGeneratorUtil.generateTimestamps(100, 1);
         List<Double> values = TestDataGeneratorUtil.generateValueOutOfBounds(-50.0, 50.0, 100, 35);
@@ -64,6 +68,28 @@ public class SanityCheckTest {
         for (SanityCheckCount sanityCheckCount : sanityCheckCounts) {
             if (sanityCheckCount.getSanityCheckType().equals(SanityCheckType.READING_TOO_HIGH) ||
                     sanityCheckCount.getSanityCheckType().equals(SanityCheckType.READING_TOO_LOW)) {
+                sanityCheckValue += sanityCheckCount.getCount();
+            }
+        }
+        Assertions.assertEquals(35, sanityCheckValue);
+    }
+
+    @Test
+    @Order(2)
+    void testReadingAboveRateOfChange() {
+        readingService.deleteAll();
+        log.info("Testing reading above rate of change");
+        Long[] timestamps = TestDataGeneratorUtil.generateTimestamps(100, 1);
+        List<Double> values = TestDataGeneratorUtil.generateValueOutOfBoundsOfMaxRateOfChange(-50.0,
+                50.0, 100, 35, 0.5, 1);
+        int i = 0;
+        for (Double value : values) {
+            readingService.save(ModelUtil.createReading(TestConstants.SENSOR_NAME_1, TestConstants.STATION_MAC_ADDRESS_1, timestamps[i++], value));
+        }
+        List<SanityCheckCount> sanityCheckCounts = readingService.getSanityCheckTypeCountBySensorId(TestConstants.SENSOR_ID_1);
+        int sanityCheckValue = 0;
+        for (SanityCheckCount sanityCheckCount : sanityCheckCounts) {
+            if (sanityCheckCount.getSanityCheckType().equals(SanityCheckType.READING_ABOVE_RATE_OF_CHANGE)) {
                 sanityCheckValue += sanityCheckCount.getCount();
             }
         }

@@ -20,15 +20,14 @@ public class TestDataGeneratorUtil {
         return values;
     }
 
-    public static List<Double> generateValueOutOfBoundsOfMaxRateOfChange(Double minValue, Double maxValue, int inBoundCount,
-                                                                         int outOfBoundCount, Double maxRateOfChangePerHour) {
-        inBoundCount = Math.min(inBoundCount, calculateNumberOfValuesWithRateOfChange(minValue,
+    public static List<Double> generateValueOutOfBoundsOfMaxRateOfChange(Double minValue, Double maxValue, int numberOfValues,
+                                                                         int outOfBoundCount, Double maxRateOfChangePerHour, double timeDifferenceInHours) {
+        numberOfValues = Math.min(numberOfValues, calculateNumberOfValuesWithRateOfChange(minValue,
                 maxValue, maxRateOfChangePerHour));
-        return generateValuesWithSteadyRateOfChange(minValue, maxRateOfChangePerHour, inBoundCount, outOfBoundCount, 0.5); // TODO: timeDifferenceInHours
-        // shall be modified according to the real data
+        return generateValuesWithSteadyRateOfChange(minValue, maxRateOfChangePerHour, numberOfValues, outOfBoundCount, timeDifferenceInHours);
     }
 
-    public static List<Double> generateValuesWithSteadyRateOfChange(double minValue, double rateOfChangePerHour,
+    private static List<Double> generateValuesWithSteadyRateOfChange(double minValue, double rateOfChangePerHour,
                                                                     int numberOfValues, int numberOfValuesOutOfBound,
                                                                     double timeDifferenceInHours) {
         List<Double> values = new ArrayList<>();
@@ -43,13 +42,13 @@ public class TestDataGeneratorUtil {
             }
         }
         for (int i = 0; i < numberOfValuesOutOfBound; i++) {
-            currentValue += rateOfChangePerHour * timeDifferenceInHours + 0.1;
+            currentValue += rateOfChangePerHour * timeDifferenceInHours + 0.25;
             values.add(currentValue);
         }
         return values;
     }
 
-    public static int calculateNumberOfValuesWithRateOfChange(double minValue, double maxValue, double rateOfChange) {
+    private static int calculateNumberOfValuesWithRateOfChange(double minValue, double maxValue, double rateOfChange) {
         return (int) Math.floor((maxValue - minValue) / rateOfChange);
     }
 
