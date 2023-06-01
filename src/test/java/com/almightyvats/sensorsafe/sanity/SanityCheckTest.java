@@ -95,4 +95,30 @@ public class SanityCheckTest {
         }
         Assertions.assertEquals(35, sanityCheckValue);
     }
+
+    @Test
+    @Order(3)
+    void testReadingDuplicate() {
+        readingService.deleteAll();
+        log.info("Testing reading duplicate");
+        Long[] timestamps = TestDataGeneratorUtil.generateTimestamps(15, 1);
+        List<Double> values = TestDataGeneratorUtil.generateValueOutOfBoundsOfMaxRateOfChange(-50.0,
+                50.0, 15, 0, 0.5, 1);
+        int i = 0;
+        for (Double value : values) {
+            readingService.save(ModelUtil.createReading(TestConstants.SENSOR_NAME_1, TestConstants.STATION_MAC_ADDRESS_1, timestamps[i++], value));
+        }
+        for (int j = 0; j < 7; j++) {
+            Double value = values.get(j);
+            readingService.save(ModelUtil.createReading(TestConstants.SENSOR_NAME_1, TestConstants.STATION_MAC_ADDRESS_1, timestamps[j], value));
+        }
+        List<SanityCheckCount> sanityCheckCounts = readingService.getSanityCheckTypeCountBySensorId(TestConstants.SENSOR_ID_1);
+        int sanityCheckValue = 0;
+        for (SanityCheckCount sanityCheckCount : sanityCheckCounts) {
+            if (sanityCheckCount.getSanityCheckType().equals(SanityCheckType.READING_DUPLICATE)) {
+                sanityCheckValue += sanityCheckCount.getCount();
+            }
+        }
+        Assertions.assertEquals(7, sanityCheckValue);
+    }
 }
