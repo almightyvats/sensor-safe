@@ -121,4 +121,28 @@ public class SanityCheckTest {
         }
         Assertions.assertEquals(7, sanityCheckValue);
     }
+
+    @Test
+    @Order(4)
+    void testReadingFrozen() {
+        readingService.deleteAll();
+        log.info("Testing reading frozen");
+        Long[] timestamps = TestDataGeneratorUtil.generateTimestamps(10, 1);
+        List<Double> values = TestDataGeneratorUtil.generateValueOutOfBoundsOfMaxRateOfChange(-50.0,
+                50.0, 10, 0, 0.5, 1);
+
+        for (int i = 0; i < 10; i++) {
+            Double value = values.get(0);
+            readingService.save(ModelUtil.createReading(TestConstants.SENSOR_NAME_1, TestConstants.STATION_MAC_ADDRESS_1, timestamps[i], value));
+        }
+        List<SanityCheckCount> sanityCheckCounts = readingService.getSanityCheckTypeCountBySensorId(TestConstants.SENSOR_ID_1);
+        int sanityCheckValue = 0;
+        for (SanityCheckCount sanityCheckCount : sanityCheckCounts) {
+            if (sanityCheckCount.getSanityCheckType().equals(SanityCheckType.READING_INVALID_FROZEN_SENSOR)) {
+                sanityCheckValue += sanityCheckCount.getCount();
+            }
+        }
+        // Since the frozen time threshold is set for 5 hours, we expect 4 sanity check counts
+        Assertions.assertEquals(4, sanityCheckValue);
+    }
 }

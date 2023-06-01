@@ -53,6 +53,12 @@ public class ReadingsForSanity {
         return subsetReadings;
     }
 
+    // function to get the time difference between the first and last readings in the list
+    public double getTimeDifferenceBetweenFirstAndLastReadings() {
+        return SanityCheckUtil.getTimeDifferenceInHours(this.readings.get(this.readings.size() - 1).getDate("timestamp"),
+                this.readings.get(0 ).getDate("timestamp"));
+    }
+
     public List<Double> getValuesFromReadings(List<Document> readings) {
         return ReadingsUtil.getValues(readings);
     }

@@ -50,8 +50,11 @@ public class SanityCheck {
                 ReadingsForSanity readingsForSanity = new ReadingsForSanity(sensorId, from, timestamp);
                 if (readingsForSanity.getNumberOfReadingsIn24Hours() > 0) {
                     from = new Date(timestamp.getTime() - sensorProperty.getMaxFrozenTimeInSeconds() * 1000L);
-                    if (SanityCheckUtil.isSensorFrozen(readingsForSanity.getReadingsBetweenTimestamps(from), value)) {
-                        sanityCheckTypeList.add(SanityCheckType.READING_INVALID_FROZEN_SENSOR);
+                    if (readingsForSanity.getTimeDifferenceBetweenFirstAndLastReadings() >=
+                            ((double)sensorProperty.getMaxFrozenTimeInSeconds()/(60*60))) {
+                        if (SanityCheckUtil.isSensorFrozen(readingsForSanity.getReadingsBetweenTimestamps(from), value)) {
+                            sanityCheckTypeList.add(SanityCheckType.READING_INVALID_FROZEN_SENSOR);
+                        }
                     }
                     if (SanityCheckUtil.isGapTooBig(timestamp, readingsForSanity.getDateFromLastReading())) {
                         sanityCheckTypeList.add(SanityCheckType.READING_INVALID_GAP_TOO_BIG);

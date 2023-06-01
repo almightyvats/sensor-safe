@@ -22,7 +22,8 @@ public class ModelUtil {
         sensorProperty.setPrecision(2);
         // TODO: these sensor properties are not meaningful right now
         sensorProperty.setSleepInterval(15000);
-        sensorProperty.setMaxFrozenTimeInSeconds(30000);
+        sensorProperty.setMaxFrozenTimeInSeconds(18000);
+        // 5 hours in seconds = 18000
         sensorProperty.setMaxRateOfChange(0.5);
         sensorProperty.setMinVariationCoefficient(0.5);
 
