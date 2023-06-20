@@ -1,12 +1,14 @@
 <h1 mat-dialog-title>Sensor Stats</h1>
 <div mat-dialog-content>
-  <mat-card class="card" *ngFor="let stat of stats">
+  <mat-card class="card" *ngFor="let stat of stats" style="margin-bottom: 5px;">
+    <div *ngIf="stat.count > 0">
     <mat-card-header>
       <mat-card-title>{{ stat.sanityCheckType }}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <p>Count: {{ stat.count }}</p>
     </mat-card-content>
+    </div>
   </mat-card>
 </div>
 <div mat-dialog-actions>

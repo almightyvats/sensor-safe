@@ -45,7 +45,7 @@ public class SanityCheckTest {
                 TestConstants.SENSOR_NAME_1, SensorType.AIR_TEMPERATURE));
     }
 
-    //    @Test
+        @Test
     void deleteAll() {
         log.info("Deleting all data");
         readingService.deleteAll();
@@ -156,7 +156,7 @@ public class SanityCheckTest {
                 50.0, 10, 0, 0.5, 1);
 
         for (int i = 0; i < 10; i++) {
-            if (i == 0 || i == 6) {
+            if (i <= 1 || i >= 6) {
                 Double value = values.get(i);
                 readingService.save(ModelUtil.createReading(TestConstants.SENSOR_NAME_1, TestConstants.STATION_MAC_ADDRESS_1, timestamps[i], value));
             }

@@ -1,20 +1,22 @@
-<h1 mat-dialog-title>Add Station</h1>
+<h1 mat-dialog-title>Add Base</h1>
 <div mat-dialog-content>
+  <mat-card-subtitle>Enter the details of the base. Hover over the text area for tip!</mat-card-subtitle>
+  <br>
   <form [formGroup]="form">
     <mat-form-field style="width: 100%">
-      <input matInput placeholder="Name" formControlName="name">
+      <input matInput placeholder="Name" formControlName="name" [matTooltip]="tooltip[0]">
     </mat-form-field>
     <br>
     <mat-form-field style="width: 100%">
-      <input matInput placeholder="MAC Address" formControlName="macAddress">
+      <input matInput placeholder="MAC Address" formControlName="macAddress" [matTooltip]="tooltip[1]">
     </mat-form-field>
     <br>
     <mat-form-field style="width: 100%">
-      <input matInput placeholder="Address" formControlName="location">
+      <input matInput placeholder="Address" formControlName="location" [matTooltip]="tooltip[2]">
     </mat-form-field>
     <br>
     <mat-form-field style="width: 100%">
-      <input matInput placeholder="Email" formControlName="email">
+      <input matInput placeholder="Email" formControlName="email" [matTooltip]="tooltip[3]">
     </mat-form-field>
   </form>
 </div>

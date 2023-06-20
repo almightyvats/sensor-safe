@@ -6,7 +6,7 @@ import lombok.Data;
 public class ReadingPayload {
     private String sensorName;
     private String stationMacAddress;
-    private String uniqueHardwareName;
+//    private String uniqueHardwareName; // remove it not needed
     private Double value;
     private Long timestamp;
 }

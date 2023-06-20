@@ -21,6 +21,7 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatSelectModule} from "@angular/material/select";
 import { StatsComponent } from './card/stats/stats.component';
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 
 @NgModule({
@@ -31,23 +32,24 @@ import { StatsComponent } from './card/stats/stats.component';
     CardFormComponent,
     StatsComponent,
   ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    MatCardModule,
-    MatButtonModule,
-    MatListModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatSidenavModule,
-    MatDialogModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    MatCheckboxModule,
-    MatSlideToggleModule,
-    MatSelectModule,
-  ],
+    imports: [
+        BrowserModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        MatCardModule,
+        MatButtonModule,
+        MatListModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatSidenavModule,
+        MatDialogModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        MatCheckboxModule,
+        MatSlideToggleModule,
+        MatSelectModule,
+        MatTooltipModule,
+    ],
   exports: [CardComponent],
   providers: [],
   bootstrap: [AppComponent]

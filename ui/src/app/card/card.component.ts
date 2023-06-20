@@ -18,6 +18,8 @@ export class CardComponent implements OnInit {
   currentSensors!: ISensor[];
   currentStation!: any;
 
+  tooltip: string[] = ["Alerts are enabled for this sensor.",
+  "Alerts are disabled for this sensor."];
   constructor(private userService: CardService, private sharedService: SharedService, private dialog: MatDialog,
               private statService: StatsService) {
     this.getAllSensors();

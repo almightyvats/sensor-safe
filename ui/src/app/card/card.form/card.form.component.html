@@ -1,11 +1,12 @@
 <h1 mat-dialog-title>Add Sensor</h1>
 <div mat-dialog-content>
   <form [formGroup]="form">
-    <mat-form-field style="width: 80%; padding-right: 25px">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+    <mat-form-field  style="width: 80%; padding-right: 25px">
       <input matInput placeholder="Name" formControlName="name">
     </mat-form-field>
-    <mat-slide-toggle formControlName="isEnable" >Enable</mat-slide-toggle>
-    <br>
+    <mat-slide-toggle formControlName="isEnable" style="margin-left: auto">Enable</mat-slide-toggle>
+    </div>
     <mat-form-field style="width: 100%">
       <mat-label>Select sensor type</mat-label>
       <mat-select formControlName="type">
@@ -26,19 +27,20 @@
       <input matInput placeholder="Min Value" type="number" formControlName="minValue">
     </mat-form-field>
     <br>
+<!--    <mat-form-field style="width: 100%">-->
+<!--      <mat-label>Enter precision in values</mat-label>-->
+<!--      <input matInput placeholder="Precision" type="number" formControlName="precision">-->
+<!--    </mat-form-field>-->
+<!--    <br>-->
     <mat-form-field style="width: 100%">
-      <mat-label>Enter precision in values</mat-label>
-      <input matInput placeholder="Precision" type="number" formControlName="precision">
-    </mat-form-field>
-    <br>
-    <mat-form-field style="width: 100%">
-      <mat-label>Enter duration between readings in seconds</mat-label>
+      <mat-label>Enter duration between readings in minutes</mat-label>
       <input matInput placeholder="Sleep Interval" type="number" formControlName="sleepInterval">
     </mat-form-field>
     <br>
     <mat-form-field style="width: 100%">
-      <mat-label>Enter max frozen time in seconds</mat-label>
-      <input matInput placeholder="Max Frozen Time In Seconds" type="number" formControlName="maxFrozenTimeInSeconds">
+      <mat-label>Enter max frozen time in hours</mat-label>
+      <input matInput placeholder="Max Frozen Time In Hours" type="number" formControlName="maxFrozenTimeInSeconds"
+      [matTooltip]="tooltip[0]">
     </mat-form-field>
     <br>
     <mat-form-field style="width: 100%">
@@ -46,11 +48,11 @@
       <input matInput placeholder="Max Rate Of Change" type="number" formControlName="maxRateOfChange">
     </mat-form-field>
     <br>
-    <mat-form-field style="width: 100%">
-      <mat-label>Enter min variation coefficient</mat-label>
-      <input matInput placeholder="Min Variation Coefficient" type="number" formControlName="minVariationCoefficient">
-    </mat-form-field>
-    <br>
+<!--    <mat-form-field style="width: 100%">-->
+<!--      <mat-label>Enter min variation coefficient</mat-label>-->
+<!--      <input matInput placeholder="Min Variation Coefficient" type="number" formControlName="minVariationCoefficient">-->
+<!--    </mat-form-field>-->
+<!--    <br>-->
     <mat-form-field style="width:45%; padding-right: 5%">
       <mat-label>Enter latitude</mat-label>
       <input matInput placeholder="Latitude" type="number" formControlName="latitude">

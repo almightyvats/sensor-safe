@@ -17,8 +17,8 @@ public class TestConstants {
     public static final String SENSOR_ID_8 = "5f8b8b8b8b8b8b8b8b8b8b8c";
 
     // some station names
-    public static final String STATION_NAME_1 = "Station 1";
-    public static final String STATION_NAME_2 = "Station 2";
+    public static final String STATION_NAME_1 = "Base 1";
+    public static final String STATION_NAME_2 = "Base 2";
     public static final String STATION_NAME_3 = "Station 3";
     public static final String STATION_NAME_4 = "Station 4";
     // some sensor names

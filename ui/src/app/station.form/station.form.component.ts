@@ -26,6 +26,11 @@ export class StationFormComponent implements OnInit {
   station!: IStation;
   showUpdateButton: boolean = false;
 
+  tooltip: string[] = ["Name of the sensor system.",
+    "MAC address of the sensor system. In case you don't know this, consult the technician.",
+    "Location/Address of the station. Eg., Innsbruck 6020",
+    "Alerts will be sent to this email address."];
+
   constructor(public dialogRef: MatDialogRef<StationFormComponent>, private apiService: AppService,
               private sharedService: SharedService, private fb: FormBuilder, @Inject(MAT_DIALOG_DATA) data: any) {
     this.station = data;

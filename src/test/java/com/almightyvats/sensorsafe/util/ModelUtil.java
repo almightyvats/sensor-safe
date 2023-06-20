@@ -86,7 +86,7 @@ public class ModelUtil {
         ReadingPayload reading = new ReadingPayload();
         reading.setSensorName(sensorName);
         reading.setStationMacAddress(stationMacAddress);
-        reading.setUniqueHardwareName(HardwareNameUtil.getUniqueHardwareName(sensorName, stationMacAddress));
+//        reading.setUniqueHardwareName(HardwareNameUtil.getUniqueHardwareName(sensorName, stationMacAddress));
         reading.setTimestamp(timestamp/1000);
         reading.setValue(value);
         return reading;

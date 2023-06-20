@@ -20,6 +20,8 @@ export class CardFormComponent implements OnInit {
   form!: FormGroup;
   showUpdateButton: boolean = false;
 
+  tooltip: string[] = ["After the specified number of hours the sensor will be considered as frozen."];
+
   constructor(public dialogRef: MatDialogRef<CardFormComponent>, private sensorApi: CardService,
               private sharedService: SharedService, @Inject(MAT_DIALOG_DATA) data: any) {
     this.sensor = data.sensor;
