@@ -26,4 +26,9 @@ export class StatsService {
     const url = this.readingBaseUrl + 'download/' + id;
     return this.http.get(url, { responseType: 'blob' });
   }
+
+  getFirstAndLastDate(id: string): Observable<any> {
+    const url = this.readingBaseUrl + 'dates/' + id;
+    return this.http.get<any[]>(url);
+  }
 }

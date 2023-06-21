@@ -6,6 +6,7 @@ import com.almightyvats.sensorsafe.core.util.HardwareNameUtil;
 import com.almightyvats.sensorsafe.core.util.ReadingPayload;
 import com.almightyvats.sensorsafe.model.Sensor;
 import com.almightyvats.sensorsafe.model.Station;
+import com.almightyvats.sensorsafe.model.custom.FirstAndLastDate;
 import com.almightyvats.sensorsafe.model.custom.SanityCheckCount;
 import com.almightyvats.sensorsafe.model.custom.SanityCheckType;
 import com.almightyvats.sensorsafe.sanity.SanityCheck;
@@ -14,10 +15,7 @@ import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -52,26 +50,25 @@ public class ReadingService {
                 log.error("Sensor not found with name: {}", reading.getSensorName());
                 return;
             }
-            if (!sensor.getParameters().isEnable()) {
-                log.debug("Sanity check is disabled for sensor: {}", sensor.getName());
-                return;
-            }
-            if (!sanityCheckTypes.contains(SanityCheckType.NO_ERROR) &&
-                    (sanityCheckTypes.contains(SanityCheckType.READING_INVALID_SPIKE) ||
-                            sanityCheckTypes.contains(SanityCheckType.READING_INVALID_FROZEN_SENSOR) ||
-                            sanityCheckTypes.contains(SanityCheckType.READING_INVALID_GAP_TOO_BIG) )) {
-                String stationId = stationService.findStationIdBySensorId(sensor.getId());
-                Station station = stationService.findById(stationId);
-                if (Objects.isNull(station)) {
-                    log.error("Station not found with id: {}", stationId);
-                }
-                String email = stationService.findEmailByStationId(stationId);
-                if (Objects.isNull(email)) {
-                    log.error("Email not found with station id: {}", stationId);
-                }
-                log.info("Sending email to: {} with sanityTypes: {}", email, sanityCheckTypes);
+            if (sensor.getParameters().isEnable()) {
+                log.debug("Alerts is enabled for sensor: {}", sensor.getName());
+                if (!sanityCheckTypes.contains(SanityCheckType.NO_ERROR) &&
+                        (sanityCheckTypes.contains(SanityCheckType.READING_INVALID_SPIKE) ||
+                                sanityCheckTypes.contains(SanityCheckType.READING_INVALID_FROZEN_SENSOR) ||
+                                sanityCheckTypes.contains(SanityCheckType.READING_INVALID_GAP_TOO_BIG))) {
+                    String stationId = stationService.findStationIdBySensorId(sensor.getId());
+                    Station station = stationService.findById(stationId);
+                    if (Objects.isNull(station)) {
+                        log.error("Station not found with id: {}", stationId);
+                    }
+                    String email = stationService.findEmailByStationId(stationId);
+                    if (Objects.isNull(email)) {
+                        log.error("Email not found with station id: {}", stationId);
+                    }
+                    log.info("Sending email to: {} with sanityTypes: {}", email, sanityCheckTypes);
 //                emailService.sendEmail(email, sensor.getName(), station.getName(), new Date(reading.getTimestamp() * 1000L),
 //                        sanityCheckTypes);
+                }
             }
             Document document = getDocument(reading);
             document.put("sanityFlag", sanityCheckTypes);
@@ -148,15 +145,39 @@ public class ReadingService {
         }
 
         List<SanityCheckCount> sanityCheckCountList = new ArrayList<>();
-         for (SanityCheckType sanityCheckType : SanityCheckType.values()) {
-             sanityCheckCountList.add(new SanityCheckCount(sanityCheckType,
-                     tsDbManager.getSanityCheckTypeCountBySensor(sensor.getUniqueHardwareName(), sanityCheckType)));
-         }
-         return sanityCheckCountList;
+        for (SanityCheckType sanityCheckType : SanityCheckType.values()) {
+            sanityCheckCountList.add(new SanityCheckCount(sanityCheckType,
+                    tsDbManager.getSanityCheckTypeCountBySensor(sensor.getUniqueHardwareName(), sanityCheckType)));
+        }
+        return sanityCheckCountList;
+    }
+
+    /**
+     * Get the first and last date for the given sensor name.
+     *
+     * @return the first and last date.
+     */
+    public FirstAndLastDate getFirstAndLastDate(String id) {
+        log.debug("Request to get first and last date for sensor: {}", id);
+        Sensor sensor = sensorService.findById(id);
+        if (sensor == null) {
+            log.error("Sensor not found with id: {}", id);
+            return null;
+        }
+        List<Document> documents = getReadingsBySensorId(id);
+        if (documents == null) {
+            log.error("No readings found for sensor: {}", sensor.getName());
+            return null;
+        }
+        Date firstReadingDate = documents.get(0).getDate("timestamp");
+        Date lastReadingDate = documents.get(documents.size() - 1).getDate("timestamp");
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        return new FirstAndLastDate(firstReadingDate.toString(), lastReadingDate.toString());
     }
 
     /**
      * Download csv file for the given sensor name.
+     *
      * @return the csv byte[]
      */
     public byte[] downloadCsv(String id) {
@@ -171,6 +192,7 @@ public class ReadingService {
 
     /**
      * Get the count of all the readings with sensorId.
+     *
      * @return the count.
      */
     public long getCountBySensorId(String id) {
@@ -186,6 +208,7 @@ public class ReadingService {
     /**
      * FOR TESTING PURPOSES ONLY
      * Get the count of all the readings.
+     *
      * @return the count of all the readings.
      */
     public long getCount() {

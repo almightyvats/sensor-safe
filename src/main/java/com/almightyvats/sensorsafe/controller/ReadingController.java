@@ -1,6 +1,7 @@
 package com.almightyvats.sensorsafe.controller;
 
 import com.almightyvats.sensorsafe.core.util.ReadingPayload;
+import com.almightyvats.sensorsafe.model.custom.FirstAndLastDate;
 import com.almightyvats.sensorsafe.model.custom.SanityCheckCount;
 import com.almightyvats.sensorsafe.service.ReadingService;
 import org.bson.Document;
@@ -47,5 +48,10 @@ public class ReadingController {
         return ResponseEntity.ok()
                 .headers(headers)
                 .body(csvBytes);
+    }
+
+    @GetMapping("/dates/{id}")
+    public ResponseEntity<FirstAndLastDate> getFirstAndLastDate(@PathVariable String id) {
+        return ResponseEntity.ok(readingService.getFirstAndLastDate(id));
     }
 }
