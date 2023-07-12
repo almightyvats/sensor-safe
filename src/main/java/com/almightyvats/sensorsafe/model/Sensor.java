@@ -8,11 +8,18 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @Document(collection = "sensor")
-public class Sensor {
+public abstract class Sensor {
     @Id
     private String id;
     private String name;
     private String uniqueHardwareName;
     private SensorType type;
     private SensorProperty parameters;
+
+    public Sensor(String name, String uniqueHardwareName, SensorType type, SensorProperty parameters) {
+        this.name = name;
+        this.uniqueHardwareName = uniqueHardwareName;
+        this.type = type;
+        this.parameters = parameters;
+    }
 }

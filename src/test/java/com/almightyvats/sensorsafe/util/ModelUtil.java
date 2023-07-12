@@ -2,6 +2,8 @@ package com.almightyvats.sensorsafe.util;
 
 import com.almightyvats.sensorsafe.core.util.HardwareNameUtil;
 import com.almightyvats.sensorsafe.core.util.ReadingPayload;
+import com.almightyvats.sensorsafe.factory.SensorFactory;
+import com.almightyvats.sensorsafe.factory.sensors.SolarRadiation;
 import com.almightyvats.sensorsafe.model.Sensor;
 import com.almightyvats.sensorsafe.model.Station;
 import com.almightyvats.sensorsafe.model.custom.SensorProperty;
@@ -12,10 +14,10 @@ import java.util.Date;
 public class ModelUtil {
 
     public static Sensor createSensor(String sensorId, String sensorName, SensorType sensorType) {
-        Sensor sensor = new Sensor();
-        sensor.setId(sensorId);
-        sensor.setName(sensorName);
-        sensor.setType(sensorType);
+//        Sensor sensor = new Sensor();
+//        sensor.setId(sensorId);
+//        sensor.setName(sensorName);
+//        sensor.setType(sensorType);
 
         SensorProperty sensorProperty = new SensorProperty();
         sensorProperty.setEnable(true);
@@ -38,8 +40,13 @@ public class ModelUtil {
                 sensorProperty.setUnit("W/m2");
                 sensorProperty.setMaxValue(1000);
                 sensorProperty.setMinValue(0);
-                sensorProperty.setLatitude(0);
-                sensorProperty.setLongitude(0);
+                SolarRadiation solarRadiationSensor = (SolarRadiation)
+                        SensorFactory.createSensor(sensorName,
+                                HardwareNameUtil.getUniqueHardwareName(sensorName, sensorId),
+                        sensorType, sensorProperty);
+                solarRadiationSensor.setLatitude(0);
+                solarRadiationSensor.setLongitude(0);
+                return solarRadiationSensor;
             }
             case SOIL_WATER_CONTENT -> {
                 sensorProperty.setUnit("m3/m3");
@@ -67,8 +74,8 @@ public class ModelUtil {
                 sensorProperty.setMinValue(0);
             }
         }
-        sensor.setParameters(sensorProperty);
-        return sensor;
+        return SensorFactory.createSensor(sensorName, HardwareNameUtil.getUniqueHardwareName(sensorName, sensorId),
+                sensorType, sensorProperty);
     }
 
     public static Station createStation(String stationId, String stationName, String macAddress, String stationLocation,

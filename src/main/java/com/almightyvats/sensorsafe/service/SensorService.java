@@ -1,6 +1,7 @@
 package com.almightyvats.sensorsafe.service;
 
 import com.almightyvats.sensorsafe.core.util.HardwareNameUtil;
+import com.almightyvats.sensorsafe.factory.SensorFactory;
 import com.almightyvats.sensorsafe.model.Sensor;
 import com.almightyvats.sensorsafe.model.Station;
 import com.almightyvats.sensorsafe.repository.SensorRepository;
@@ -82,7 +83,10 @@ public class SensorService {
             log.error("Sensor with name {} already exists", sensor.getName());
             return null;
         }
-        Sensor savedSensor = sensorRepository.save(sensor);
+        Sensor sensorToSave = SensorFactory.createSensor(sensor.getName(), sensor.getUniqueHardwareName(),
+                sensor.getType(), sensor.getParameters());
+        assert sensorToSave != null;
+        Sensor savedSensor = sensorRepository.save(sensorToSave);
         stationService.addSensor(station.getId(), savedSensor.getId());
         return savedSensor;
     }
