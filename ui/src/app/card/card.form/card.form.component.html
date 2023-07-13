@@ -1,11 +1,14 @@
 <h1 mat-dialog-title>Add Sensor</h1>
 <div mat-dialog-content>
+  <mat-card-subtitle>Enter the details for the sensor. Hover over the text area for tip!</mat-card-subtitle>
+  <br>
   <form [formGroup]="form">
     <div style="display: flex; justify-content: space-between; align-items: center;">
-    <mat-form-field  style="width: 80%; padding-right: 25px">
-      <input matInput placeholder="Name" formControlName="name">
-    </mat-form-field>
-    <mat-slide-toggle formControlName="isEnable" style="margin-left: auto">Enable</mat-slide-toggle>
+      <mat-form-field style="width: 80%; padding-right: 25px">
+        <input matInput placeholder="Name" formControlName="name" [matTooltip]="tooltip[0]">
+      </mat-form-field>
+      <mat-slide-toggle formControlName="isEnable" style="margin-left: auto" [matTooltip]="tooltip[1]">Alerts
+      </mat-slide-toggle>
     </div>
     <mat-form-field style="width: 100%">
       <mat-label>Select sensor type</mat-label>
@@ -15,57 +18,61 @@
     </mat-form-field>
     <br>
     <mat-form-field style="width: 100%">
-      <input matInput placeholder="Unit" formControlName="unit">
+      <input matInput placeholder="Unit" formControlName="unit" [matTooltip]="tooltip[2]">
     </mat-form-field>
     <br>
     <mat-form-field style="width: 45%; padding-right: 5%">
       <mat-label>Enter max value for sensor</mat-label>
-      <input matInput type="number" formControlName="maxValue">
+      <input matInput type="number" formControlName="maxValue" [matTooltip]="tooltip[3]">
     </mat-form-field>
     <mat-form-field style="width: 45%; padding-left: 5%">
       <mat-label>Enter min value for sensor</mat-label>
-      <input matInput placeholder="Min Value" type="number" formControlName="minValue">
+      <input matInput placeholder="Min Value" type="number" formControlName="minValue" [matTooltip]="tooltip[4]">
     </mat-form-field>
     <br>
-<!--    <mat-form-field style="width: 100%">-->
-<!--      <mat-label>Enter precision in values</mat-label>-->
-<!--      <input matInput placeholder="Precision" type="number" formControlName="precision">-->
-<!--    </mat-form-field>-->
-<!--    <br>-->
+    <!--    <mat-form-field style="width: 100%">-->
+    <!--      <mat-label>Enter precision in values</mat-label>-->
+    <!--      <input matInput placeholder="Precision" type="number" formControlName="precision">-->
+    <!--    </mat-form-field>-->
+    <!--    <br>-->
     <mat-form-field style="width: 100%">
       <mat-label>Enter duration between readings in minutes</mat-label>
-      <input matInput placeholder="Sleep Interval" type="number" formControlName="sleepInterval">
+      <input matInput placeholder="Sleep Interval" type="number" formControlName="sleepInterval"
+             [matTooltip]="tooltip[5]">
     </mat-form-field>
     <br>
     <mat-form-field style="width: 100%">
       <mat-label>Enter max frozen time in hours</mat-label>
       <input matInput placeholder="Max Frozen Time In Hours" type="number" formControlName="maxFrozenTimeInSeconds"
-      [matTooltip]="tooltip[0]">
+             [matTooltip]="tooltip[6]">
     </mat-form-field>
     <br>
     <mat-form-field style="width: 100%">
       <mat-label>Enter max rate of change</mat-label>
-      <input matInput placeholder="Max Rate Of Change" type="number" formControlName="maxRateOfChange">
+      <input matInput placeholder="Max Rate Of Change" type="number" formControlName="maxRateOfChange"
+             [matTooltip]="tooltip[7]">
     </mat-form-field>
     <br>
-<!--    <mat-form-field style="width: 100%">-->
-<!--      <mat-label>Enter min variation coefficient</mat-label>-->
-<!--      <input matInput placeholder="Min Variation Coefficient" type="number" formControlName="minVariationCoefficient">-->
-<!--    </mat-form-field>-->
-<!--    <br>-->
+    <!--    <mat-form-field style="width: 100%">-->
+    <!--      <mat-label>Enter min variation coefficient</mat-label>-->
+    <!--      <input matInput placeholder="Min Variation Coefficient" type="number" formControlName="minVariationCoefficient">-->
+    <!--    </mat-form-field>-->
+    <!--    <br>-->
     <mat-form-field style="width:45%; padding-right: 5%">
       <mat-label>Enter latitude</mat-label>
-      <input matInput placeholder="Latitude" type="number" formControlName="latitude">
+      <input matInput placeholder="Latitude" type="number" formControlName="latitude" [matTooltip]="tooltip[8]">
     </mat-form-field>
     <mat-form-field style="width: 45%; padding-left: 5%">
       <mat-label>Enter longitude</mat-label>
-      <input matInput placeholder="Longitude" type="number" formControlName="longitude">
+      <input matInput placeholder="Longitude" type="number" formControlName="longitude" [matTooltip]="tooltip[9]">
     </mat-form-field>
     <br>
   </form>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial *ngIf="!showUpdateButton" (click)="submit()">Save</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial *ngIf="showUpdateButton" (click)="update()">Update</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial *ngIf="!showUpdateButton" (click)="submit()">Save
+  </button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial *ngIf="showUpdateButton" (click)="update()">Update
+  </button>
 </div>

@@ -20,26 +20,21 @@
     <mat-divider></mat-divider>
 
     <div *ngFor="let station of stations">
-      <table>
-        <tr>
-          <td>
-            <button mat-button class="menu-button">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+            <button mat-button class="menu-button" (click)="onClick(station.id)">
               <mat-icon>home</mat-icon>
-            <span (click)="onClick(station.id)" >{{ station.name }}</span>
+            <span>{{ station.name }}</span>
             </button>
-          </td>
-          <td>
-            <button mat-button class="menu-button" (click)="openModal(station.id)">
+
+            <button mat-button (click)="openModal(station.id)" style="margin-left: auto">
               <mat-icon>edit</mat-icon>
             </button>
-          </td>
-          <td>
-            <button mat-button class="menu-button" (click)="delete(station.id)">
+
+            <button mat-button (click)="delete(station.id)" style="margin-left: auto">
               <mat-icon>delete</mat-icon>
             </button>
-          </td>
-        </tr>
-      </table>
+
+      </div>
     </div>
 
   </mat-sidenav>

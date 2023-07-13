@@ -20,7 +20,20 @@ export class CardFormComponent implements OnInit {
   form!: FormGroup;
   showUpdateButton: boolean = false;
 
-  tooltip: string[] = ["After the specified number of hours the sensor will be considered as frozen."];
+  tooltip: string[] = [
+    "Unique name of the sensor",
+    "Only enabled sensors will be considered for alerting and downloading data",
+    "Unit of the sensor value",
+    "Maximum value of the sensor",
+    "Minimum value of the sensor",
+    "Duration between two consecutive readings in minutes",
+    "After the specified number of hours the sensor will be considered as frozen. Users will be " +
+    "notified about the frozen sensor.",
+    "Rate of change of the sensor value per hour. If the rate of change is greater than the specified value, " +
+    "the reading will be flagged by no alert will be sent",
+    "Latitudinal position of the sensor",
+    "Longitudinal position of the sensor",
+  ];
 
   constructor(public dialogRef: MatDialogRef<CardFormComponent>, private sensorApi: CardService,
               private sharedService: SharedService, @Inject(MAT_DIALOG_DATA) data: any) {

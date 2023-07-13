@@ -16,7 +16,7 @@
         <button mat-button (click)="openModal(sensor.id)">Modify</button>
         <div *ngIf="sensor.parameters.isEnable">
           <button mat-button (click)="openStats(sensor.id)">Stats</button>
-          <button mat-button (click)="download(sensor.id)">
+          <button mat-button (click)="download(sensor.id)" [matTooltip]="tooltip[2]">
             <mat-icon>download</mat-icon>
           </button>
         </div>

@@ -18,6 +18,7 @@ export class SharedService {
   sensorsData = this.sensors.asObservable();
 
   setCurrentStation(data: any) {
+    console.log(this.TAG, 'setCurrentStation', data);
     this.currentStation.next(data);
   }
 

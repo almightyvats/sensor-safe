@@ -89,6 +89,8 @@ export class AppComponent implements OnInit {
   onClick(stationId: any) {
     // get station with stationId
     const station = this.stations.find((station: any) => station.id === stationId);
+    // log
+    console.log(this.TAG, 'onClick', station);
     this.setStationInSharedService(station);
   }
 
