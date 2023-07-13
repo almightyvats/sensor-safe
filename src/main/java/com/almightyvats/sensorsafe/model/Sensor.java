@@ -1,5 +1,6 @@
 package com.almightyvats.sensorsafe.model;
 
+import com.almightyvats.sensorsafe.factory.sensors.property.AirTemperatureProperty;
 import com.almightyvats.sensorsafe.model.custom.SensorProperty;
 import com.almightyvats.sensorsafe.model.custom.SensorType;
 import lombok.Data;
@@ -14,12 +15,12 @@ public abstract class Sensor {
     private String name;
     private String uniqueHardwareName;
     private SensorType type;
-    private SensorProperty parameters;
 
-    public Sensor(String name, String uniqueHardwareName, SensorType type, SensorProperty parameters) {
+    public Sensor(String name, String uniqueHardwareName, SensorType type) {
         this.name = name;
         this.uniqueHardwareName = uniqueHardwareName;
         this.type = type;
-        this.parameters = parameters;
     }
+
+    public abstract SensorProperty getParameters();
 }

@@ -1,10 +1,9 @@
 package com.almightyvats.sensorsafe.sanity.util;
 
 import com.almightyvats.sensorsafe.model.custom.SensorProperty;
-import com.almightyvats.sensorsafe.model.custom.SensorType;
+import com.almightyvats.sensorsafe.model.custom.SensorPropertyOld;
 import com.almightyvats.sensorsafe.service.ReadingService;
 import org.bson.Document;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import smile.math.MathEx;
 

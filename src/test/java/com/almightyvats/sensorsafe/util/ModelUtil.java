@@ -2,18 +2,22 @@ package com.almightyvats.sensorsafe.util;
 
 import com.almightyvats.sensorsafe.core.util.HardwareNameUtil;
 import com.almightyvats.sensorsafe.core.util.ReadingPayload;
+import com.almightyvats.sensorsafe.core.util.SensorPayload;
 import com.almightyvats.sensorsafe.factory.SensorFactory;
 import com.almightyvats.sensorsafe.factory.sensors.SolarRadiation;
+import com.almightyvats.sensorsafe.factory.sensors.property.SolarRadiationProperty;
 import com.almightyvats.sensorsafe.model.Sensor;
 import com.almightyvats.sensorsafe.model.Station;
 import com.almightyvats.sensorsafe.model.custom.SensorProperty;
+import com.almightyvats.sensorsafe.model.custom.SensorPropertyOld;
 import com.almightyvats.sensorsafe.model.custom.SensorType;
 
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ModelUtil {
 
-    public static Sensor createSensor(String sensorId, String sensorName, SensorType sensorType) {
+    public static SensorPayload createSensor(String sensorId, String sensorName, SensorType sensorType) {
 //        Sensor sensor = new Sensor();
 //        sensor.setId(sensorId);
 //        sensor.setName(sensorName);
@@ -37,16 +41,19 @@ public class ModelUtil {
                 sensorProperty.setMinValue(0);
             }
             case SOLAR_RADIATION -> {
-                sensorProperty.setUnit("W/m2");
-                sensorProperty.setMaxValue(1000);
-                sensorProperty.setMinValue(0);
-                SolarRadiation solarRadiationSensor = (SolarRadiation)
-                        SensorFactory.createSensor(sensorName,
-                                HardwareNameUtil.getUniqueHardwareName(sensorName, sensorId),
-                        sensorType, sensorProperty);
-                solarRadiationSensor.setLatitude(0);
-                solarRadiationSensor.setLongitude(0);
-                return solarRadiationSensor;
+                Map<String, Object> properties = new HashMap<>();
+                properties.put("isEnable", true);
+                properties.put("maxValue", 1000.0);
+                properties.put("minValue", 0.0);
+                properties.put("unit", "W/m2");
+                properties.put("precision", 2);
+                properties.put("sleepInterval", 15000.0);
+                properties.put("maxFrozenTimeInSeconds", 18000);
+                properties.put("maxRateOfChange", 0.5);
+                properties.put("minVariationCoefficient", 0.5);
+                properties.put("latitude", 45.0);
+                properties.put("longitude", 17.0);
+                return new SensorPayload(sensorName, sensorType, properties);
             }
             case SOIL_WATER_CONTENT -> {
                 sensorProperty.setUnit("m3/m3");
@@ -67,6 +74,12 @@ public class ModelUtil {
                 sensorProperty.setUnit("C");
                 sensorProperty.setMaxValue(50);
                 sensorProperty.setMinValue(-50);
+
+                Map<String, Object> properties;
+                properties = Map.of("isEnable", true, "maxValue", 50.0, "minValue", -50.0, "unit", "C", "precision", 2,
+                        "sleepInterval", 15000.0, "maxFrozenTimeInSeconds", 18000, "maxRateOfChange", 0.5,
+                        "minVariationCoefficient", 0.5);
+                return new SensorPayload(sensorName, sensorType, properties);
             }
             case DENDROMETER -> {
                 sensorProperty.setUnit("m");
@@ -74,8 +87,7 @@ public class ModelUtil {
                 sensorProperty.setMinValue(0);
             }
         }
-        return SensorFactory.createSensor(sensorName, HardwareNameUtil.getUniqueHardwareName(sensorName, sensorId),
-                sensorType, sensorProperty);
+        return null;
     }
 
     public static Station createStation(String stationId, String stationName, String macAddress, String stationLocation,
@@ -94,7 +106,7 @@ public class ModelUtil {
         reading.setSensorName(sensorName);
         reading.setStationMacAddress(stationMacAddress);
 //        reading.setUniqueHardwareName(HardwareNameUtil.getUniqueHardwareName(sensorName, stationMacAddress));
-        reading.setTimestamp(timestamp/1000);
+        reading.setTimestamp(timestamp / 1000);
         reading.setValue(value);
         return reading;
     }

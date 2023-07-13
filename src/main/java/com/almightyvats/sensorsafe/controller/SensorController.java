@@ -1,5 +1,6 @@
 package com.almightyvats.sensorsafe.controller;
 
+import com.almightyvats.sensorsafe.core.util.SensorPayload;
 import com.almightyvats.sensorsafe.model.Sensor;
 import com.almightyvats.sensorsafe.service.SensorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +27,12 @@ public class SensorController {
     }
 
     @PostMapping("/add/{station_id}")
-    public Sensor saveSensor(@PathVariable String station_id, @RequestBody Sensor sensor) {
+    public Sensor saveSensor(@PathVariable String station_id, @RequestBody SensorPayload sensor) {
         return sensorService.save(station_id, sensor);
     }
 
     @PutMapping("/update/{station_id}/{sensor_id}")
-    public Sensor updateSensor(@PathVariable String station_id, @PathVariable String sensor_id, @RequestBody Sensor sensor) {
+    public Sensor updateSensor(@PathVariable String station_id, @PathVariable String sensor_id, @RequestBody SensorPayload sensor) {
         return sensorService.update(station_id, sensor_id, sensor);
     }
 

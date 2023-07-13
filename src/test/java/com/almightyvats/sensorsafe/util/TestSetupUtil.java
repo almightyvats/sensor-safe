@@ -45,7 +45,7 @@ public class TestSetupUtil {
     @Test
     void setupTemp() {
         stationService.save(ModelUtil.createStation(TestConstants.STATION_ID_4, TestConstants.STATION_NAME_4,
-                TestConstants.STATION_MAC_ADDRESS_4, TestConstants.STATION_LOCATION_1, TestConstants.STATION_EMAIL_1));
+                TestConstants.STATION_MAC_ADDRESS_4, TestConstants.STATION_LOCATION_4, TestConstants.STATION_EMAIL_1));
         sensorService.save(TestConstants.STATION_ID_4, ModelUtil.createSensor(TestConstants.SENSOR_ID_7,
                 TestConstants.SENSOR_NAME_6, SensorType.AIR_TEMPERATURE));
         sensorService.save(TestConstants.STATION_ID_4, ModelUtil.createSensor(TestConstants.SENSOR_ID_8,

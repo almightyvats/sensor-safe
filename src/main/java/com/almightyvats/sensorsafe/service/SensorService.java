@@ -1,6 +1,7 @@
 package com.almightyvats.sensorsafe.service;
 
 import com.almightyvats.sensorsafe.core.util.HardwareNameUtil;
+import com.almightyvats.sensorsafe.core.util.SensorPayload;
 import com.almightyvats.sensorsafe.factory.SensorFactory;
 import com.almightyvats.sensorsafe.model.Sensor;
 import com.almightyvats.sensorsafe.model.Station;
@@ -67,24 +68,28 @@ public class SensorService {
     /**
      * Save a sensor.
      *
-     * @param stationId the id of the station to which the sensor belongs.
-     * @param sensor the entity to save.
+     * @param stationId     the id of the station to which the sensor belongs.
+     * @param sensorPayload the entity to save.
      * @return the persisted entity.
      */
-    public Sensor save(String stationId, Sensor sensor) {
-        log.debug("Request to save Sensor : {}", sensor);
+    public Sensor save(String stationId, SensorPayload sensorPayload) {
+        log.debug("Request to save Sensor : {}", sensorPayload);
         Station station = stationService.findById(stationId);
         if (station == null) {
             log.error("Station with id {} does not exist", stationId);
             return null;
         }
-        sensor.setUniqueHardwareName(HardwareNameUtil.getUniqueHardwareName(sensor.getName(), station.getMacAddress()));
-        if (sensorRepository.existsByName(sensor.getName())) {
-            log.error("Sensor with name {} already exists", sensor.getName());
+        String uniqueHardwareName = HardwareNameUtil.getUniqueHardwareName(sensorPayload.getName(),
+                station.getMacAddress());
+
+        if (sensorRepository.existsByName(sensorPayload.getName())) {
+            log.error("Sensor with name {} already exists", sensorPayload.getName());
             return null;
         }
-        Sensor sensorToSave = SensorFactory.createSensor(sensor.getName(), sensor.getUniqueHardwareName(),
-                sensor.getType(), sensor.getParameters());
+
+        Sensor sensorToSave = SensorFactory.createSensor(sensorPayload.getName(), uniqueHardwareName,
+                sensorPayload.getType(), sensorPayload.getProperties());
+
         assert sensorToSave != null;
         Sensor savedSensor = sensorRepository.save(sensorToSave);
         stationService.addSensor(station.getId(), savedSensor.getId());
@@ -97,7 +102,7 @@ public class SensorService {
      * @param sensorToUpdate the entity to update.
      * @return the persisted entity.
      */
-    public Sensor update(String stationId, String sensorToUpdateId, Sensor sensorToUpdate) {
+    public Sensor update(String stationId, String sensorToUpdateId, SensorPayload sensorToUpdate) {
         log.debug("Request to update Sensor : {}", sensorToUpdate);
         Sensor sensor = sensorRepository.findById(sensorToUpdateId).orElse(null);
         if (sensor == null) {
@@ -113,13 +118,12 @@ public class SensorService {
         sensor.setUniqueHardwareName(HardwareNameUtil.getUniqueHardwareName(sensorToUpdate.getName(),
                 station.getMacAddress()));
         sensor.setType(sensorToUpdate.getType());
-        sensor.setParameters(sensorToUpdate.getParameters());
         return sensorRepository.save(sensor);
     }
 
     /**
      * FOR TESTING PURPOSES ONLY
-     *
+     * <p>
      * Delete all sensors.
      */
     public void deleteAll() {

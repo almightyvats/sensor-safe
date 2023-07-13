@@ -1,5 +1,6 @@
 package com.almightyvats.sensorsafe.controller;
 
+import com.almightyvats.sensorsafe.core.util.SensorPayload;
 import com.almightyvats.sensorsafe.model.Sensor;
 import com.almightyvats.sensorsafe.model.Station;
 import com.almightyvats.sensorsafe.model.custom.SensorType;
@@ -49,7 +50,7 @@ class SensorControllerTest {
                 TestConstants.STATION_MAC_ADDRESS_1, TestConstants.STATION_LOCATION_1, TestConstants.STATION_EMAIL_1);
         stationService.save(station);
 
-        Sensor sensor = ModelUtil.createSensor(TestConstants.SENSOR_ID_1, TestConstants.SENSOR_NAME_1,
+        SensorPayload sensor = ModelUtil.createSensor(TestConstants.SENSOR_ID_1, TestConstants.SENSOR_NAME_1,
                 SensorType.AIR_TEMPERATURE);
         sensorService.save(TestConstants.STATION_ID_1, sensor);
     }
@@ -90,7 +91,7 @@ class SensorControllerTest {
     @Order(3)
     void saveSensor() throws Exception {
         log.info("Testing saveSensor");
-        Sensor sensor = ModelUtil.createSensor(TestConstants.SENSOR_ID_2, TestConstants.SENSOR_NAME_2,
+        SensorPayload sensor = ModelUtil.createSensor(TestConstants.SENSOR_ID_2, TestConstants.SENSOR_NAME_2,
                 SensorType.RELATIVE_HUMIDITY);
 
         mockMvc.perform(post("/v1/sensor/add/{id}", TestConstants.STATION_ID_1)
