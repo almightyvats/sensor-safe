@@ -66,8 +66,8 @@ public class ReadingService {
                         log.error("Email not found with station id: {}", stationId);
                     }
                     log.info("Sending email to: {} with sanityTypes: {}", email, sanityCheckTypes);
-//                emailService.sendEmail(email, sensor.getName(), station.getName(), new Date(reading.getTimestamp() * 1000L),
-//                        sanityCheckTypes);
+                    emailService.sendEmail(email, sensor.getName(), station.getName(), new Date(reading.getTimestamp() * 1000L),
+                            sanityCheckTypes);
                 }
             }
             Document document = getDocument(reading);

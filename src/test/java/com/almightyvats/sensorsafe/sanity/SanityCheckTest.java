@@ -45,7 +45,7 @@ public class SanityCheckTest {
                 TestConstants.SENSOR_NAME_1, SensorType.AIR_TEMPERATURE));
     }
 
-        @Test
+    @Test
     void deleteAll() {
         log.info("Deleting all data");
         readingService.deleteAll();
@@ -151,7 +151,8 @@ public class SanityCheckTest {
     void testReadingGap() {
         readingService.deleteAll();
         log.info("Testing reading gap");
-        Long[] timestamps = TestDataGeneratorUtil.generateTimestamps(10, 1);
+//        Long[] timestamps = TestDataGeneratorUtil.generateTimestamps(10, 1);
+        Long[] timestamps = TestDataGeneratorUtil.generateTimestampsWithInitial(10, 1);
         List<Double> values = TestDataGeneratorUtil.generateValueOutOfBoundsOfMaxRateOfChange(-50.0,
                 50.0, 10, 0, 0.5, 1);
 

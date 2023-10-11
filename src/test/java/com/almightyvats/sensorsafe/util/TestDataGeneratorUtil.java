@@ -3,6 +3,8 @@ package com.almightyvats.sensorsafe.util;
 import com.almightyvats.sensorsafe.sanity.util.SanityCheckUtil;
 import smile.math.MathEx;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.*;
 public class TestDataGeneratorUtil {
     private static final Random random = new Random();
@@ -97,6 +99,33 @@ public class TestDataGeneratorUtil {
 
         // Generate initial timestamp
         timestamps[0] = System.currentTimeMillis();
+
+        // Generate subsequent timestamps separated by one hour
+        for (int i = 1; i < numberOfValues; i++) {
+            timestamps[i] = timestamps[i - 1] + timeDifference;
+        }
+
+        return timestamps;
+    }
+
+    public static Long[] generateTimestampsWithInitial(int numberOfValues, long timeDifferenceInHours) {
+        Long[] timestamps = new Long[numberOfValues];
+        long timeDifference = 60 * 60 * 1000 * timeDifferenceInHours;
+
+        // Generate initial timestamp
+        int year = 2023;
+        int month = 6;
+        int dayOfMonth = 21;
+        int hour = 15;
+        int minute = 48;
+        int second = 41;
+
+        // Create a LocalDateTime object for the specific date and time
+        LocalDateTime localDateTime = LocalDateTime.of(year, month, dayOfMonth, hour, minute, second);
+
+        // Get the long timestamp value in milliseconds
+        long timestampMillis = localDateTime.toInstant(ZoneOffset.UTC).toEpochMilli();
+        timestamps[0] = timestampMillis;
 
         // Generate subsequent timestamps separated by one hour
         for (int i = 1; i < numberOfValues; i++) {
